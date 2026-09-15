@@ -15,6 +15,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from atsc.config import get_settings
+from atsc.free.growth import GrowthLog
 from atsc.web.report import router as report_router
 from atsc.web.routes import router
 
@@ -35,6 +36,9 @@ def create_app(*, warm: bool | None = None) -> FastAPI:
 
     app = FastAPI(title="ATS Checker", docs_url=None, redoc_url=None, lifespan=lifespan)
     app.state.settings = settings
+    app.state.growth = GrowthLog(
+        Path(settings.growth_log_path) if settings.growth_log_path else None
+    )
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
     app.include_router(router)
     app.include_router(report_router)

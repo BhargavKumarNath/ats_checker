@@ -42,7 +42,17 @@ from atsc.free.service import (
 )
 
 router = APIRouter()
-templates = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
+
+
+def _site_context(request: Request) -> dict[str, Any]:
+    """Per-request template globals that depend on this app's settings."""
+    settings = getattr(request.app.state, "settings", None)
+    return {"growth_enabled": bool(settings and settings.growth_log_path)}
+
+
+templates = Jinja2Templates(
+    directory=str(Path(__file__).parent / "templates"), context_processors=[_site_context]
+)
 
 
 def clip(text: str, limit: int = 160) -> str:
@@ -116,7 +126,12 @@ async def score_endpoint(
         platform=platform, role_track=role_track, resume_text=resume_text, jd_text=jd_text
     )
     try:
-        outcome = await asyncio.to_thread(run, sub, max_upload_bytes=settings.max_upload_bytes)
+        outcome = await asyncio.to_thread(
+            run,
+            sub,
+            max_upload_bytes=settings.max_upload_bytes,
+            growth=getattr(request.app.state, "growth", None),
+        )
     except SubmissionError as e:
         ctx = {**form, "message": e.message}
         name = "partials/error.html" if _is_htmx(request) else "index.html"

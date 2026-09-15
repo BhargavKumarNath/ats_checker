@@ -39,6 +39,10 @@ class Settings(BaseSettings):
     smtp_password: str = ""
     email_from: str = ""
 
+    # Taxonomy growth loop (gap_analysis_spec.md §4). Empty = off. When set, unmatched skill
+    # terms are counted in aggregate in this SQLite file; see atsc.free.growth.
+    growth_log_path: str = ""
+
     # Worker polling interval in seconds.
     worker_poll_seconds: float = 3.0
 

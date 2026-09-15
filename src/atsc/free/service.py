@@ -19,6 +19,7 @@ from atsc.core.models import (
 )
 from atsc.core.parsing import UnsupportedFormatError, parse_resume_file, parse_resume_text
 from atsc.core.scoring import score
+from atsc.free.growth import GrowthLog, candidate_terms
 
 MIN_RESUME_CHARS = 200
 MIN_JD_CHARS = 100
@@ -63,7 +64,7 @@ def parse_role_track(value: str) -> RoleTrack | None:
         return None
 
 
-def run(sub: Submission, *, max_upload_bytes: int) -> Outcome:
+def run(sub: Submission, *, max_upload_bytes: int, growth: GrowthLog | None = None) -> Outcome:
     if sub.resume_bytes is not None and len(sub.resume_bytes) > max_upload_bytes:
         mb = max_upload_bytes / 1_000_000
         raise SubmissionError(
@@ -94,4 +95,6 @@ def run(sub: Submission, *, max_upload_bytes: int) -> Outcome:
         )
     jd = parse_job_description(sub.jd_text)
     result = score(resume, report, jd, role_track=sub.role_track, platform=sub.platform)
+    if growth is not None and growth.enabled:
+        growth.record(candidate_terms(resume, jd))
     return Outcome(result=result, resume=resume, report=report, jd=jd)

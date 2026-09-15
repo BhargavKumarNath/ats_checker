@@ -36,6 +36,10 @@ uv run ruff check . && uv run ruff format --check .
 uv run mypy                  # strict on src/atsc
 uv run lint-imports          # cost-boundary import contract (must say "kept")
 uv run uvicorn atsc.web.app:app --reload
+uv run python -m atsc.deep.worker            # Layer 2 worker: the only process with ANTHROPIC_API_KEY
+uv run python scripts/deep_report_smoke.py   # one real paid report from the fixtures (spends tokens)
+uv run python scripts/bench/retrieval_bench.py   # Layer 2 retrieval eval by model and mode
+uv run python scripts/growth_report.py       # top unmatched terms when ATSC_GROWTH_LOG_PATH is set
 docker build -t atsc . && docker run --rm -p 8080:8080 atsc
 ```
 

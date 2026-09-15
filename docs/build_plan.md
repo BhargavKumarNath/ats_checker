@@ -266,3 +266,25 @@ The single hybrid miss was a corpus gap (a Spark bullet that only said "PySpark"
 - The free layer's cost boundary is unchanged: the web process imports the job store and Stripe, never the generator; `tests/test_cost_boundary.py` still passes on the import graph.
 
 **Left (owner actions before public launch):** create the Stripe product and price, set the three Stripe secrets and `ATSC_PUBLIC_BASE_URL`, point `ATSC_DATABASE_URL` at Postgres, set `ANTHROPIC_API_KEY` for the worker group only, configure SMTP, run `scripts/deep_report_smoke.py` once, add rate limiting on `/score`. Retention policy for stored inputs and reports is not implemented (suggest deleting jobs 30 days after completion). Next: Phase 11 (deferred items).
+
+### Phase 11 — Deferred items (growth loop complete, multi-JD deferred, 2026-09-15)
+
+**Built:** taxonomy growth loop per `gap_analysis_spec.md` §4. `atsc.free.growth.candidate_terms` takes the unmatched skill-section phrases from the resume and, from JD requirement lines that matched no cluster and start with a requirement lead-in ("experience with", "proficiency in", …), the comma/or/and-separated fragments of up to three words. Anything with a digit or "@", longer than 40 characters, or in a small noise list is dropped. `GrowthLog` counts terms in a SQLite table (term, count) at `ATSC_GROWTH_LOG_PATH`; unset means off, which is the default. When on, the footer says so. `scripts/growth_report.py` prints the top terms; a term near the top is a candidate surface form or missing cluster. 6 tests, 190 total. `CLAUDE.md` Commands section lists the worker, smoke, bench and growth commands.
+
+**Deferred, deliberately:** multi-JD comparison. `product_requirements.md` §5 item 6 defers it "until Layer 1 and Layer 2 are working and validated"; Layer 2 has not yet run against the real model (see Phase 9). The free flow is stateless per request, so the natural shape is one resume held client-side and N postings scored in sequence on one page; nothing in the current design blocks it.
+
+**Decided (not in original docs):**
+- The growth log is aggregate-only and opt-in so the footer's "nothing stored" stays true by default, and becomes "terms counted in aggregate" only when the owner turns it on.
+- Prose requirement sentences without a lead-in are not mined; they are rarely skill lists and would leak sentence fragments.
+
+## 7. Launch checklist (owner actions)
+
+Everything below is configuration or a paid action; the code path for each is built and tested.
+
+1. Stripe: create the product and one-time price; set `ATSC_STRIPE_SECRET_KEY`, `ATSC_STRIPE_PRICE_ID`, `ATSC_STRIPE_WEBHOOK_SECRET`; point the webhook at `POST /stripe/webhook`.
+2. Fly: `fly launch` with `fly.toml`; set `ATSC_PUBLIC_BASE_URL`; attach Postgres and set `ATSC_DATABASE_URL`; set `ANTHROPIC_API_KEY` as a secret and confirm it is reachable only from the `worker` process group (the web group must not have it: cost-boundary guard 3).
+3. Email: set `ATSC_SMTP_*` and `ATSC_EMAIL_FROM`, or leave unset to log links during a soft launch.
+4. Run `scripts/deep_report_smoke.py` once with a key and read the output: prompt behaviour, effort level and cost per report are unvalidated until then.
+5. Add rate limiting on `POST /score` (Fly proxy or a small in-process limiter) before public traffic.
+6. Decide the retention period for `report_jobs` and add the delete job (suggest 30 days after completion).
+7. Optional: set `ATSC_GROWTH_LOG_PATH` and review `scripts/growth_report.py` weekly to grow `taxonomy/`.
