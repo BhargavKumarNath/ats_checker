@@ -1,0 +1,29 @@
+Senior Machine Learning Engineer, LLM Platform
+
+About Northwind Labs
+Northwind Labs builds developer tooling for teams shipping AI products. We are a remote-first company of 120 people headquartered in Denver, CO, and we were named one of the fastest-growing startups in Colorado in 2025.
+
+What you'll do
+- Design, build, and deploy LLM-powered features using retrieval-augmented generation and vector databases.
+- Own the model serving stack (vLLM, Triton) and drive latency and cost improvements in production.
+- Partner with product managers to translate customer needs into roadmap items.
+- Mentor junior engineers and participate in design reviews.
+
+Minimum qualifications
+- 5+ years of professional software engineering experience, with at least 3 years focused on machine learning systems.
+- Strong proficiency in Python and PyTorch.
+- Hands-on experience fine-tuning transformer models (LoRA, QLoRA, or other parameter-efficient methods).
+- Experience deploying models with Docker and Kubernetes on AWS or GCP.
+- Solid understanding of experiment tracking and MLOps practices (MLflow, Weights & Biases).
+
+Preferred qualifications
+- Experience with LangChain or LlamaIndex.
+- Familiarity with model quantization (GPTQ, AWQ) is a plus.
+- Contributions to open-source ML projects.
+
+Benefits
+- Competitive salary and equity.
+- Comprehensive health, dental, and vision insurance.
+- 401(k) with company match and unlimited PTO.
+
+Northwind Labs is an equal opportunity employer. We do not discriminate on the basis of race, religion, color, national origin, gender, sexual orientation, age, marital status, veteran status, or disability status. Applicants must be authorized to work in the United States.

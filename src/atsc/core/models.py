@@ -90,6 +90,33 @@ class ParsedResume(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Parsed job description (data_model.md §3, job_description_analysis.md §4).
+# ---------------------------------------------------------------------------
+
+RequirementType = Literal["required", "preferred"]
+RoleTrackSignal = RoleTrack | Literal["unclear"]
+
+
+class Requirement(BaseModel):
+    raw_text: str
+    requirement_type: RequirementType
+    # As with SkillEntry: a line may name several clusters, so a list. Empty = unmatched.
+    matched_clusters: list[str] = Field(default_factory=list)
+    embedding: list[float] | None = Field(default=None, exclude=True, repr=False)
+
+
+class ParsedJobDescription(BaseModel):
+    role_track_signal: RoleTrackSignal = "unclear"
+    # Layer 2 only. One of: intern, junior, mid, senior, staff, principal, unclear.
+    seniority_signal: str = "unclear"
+    # Minimum years asked for, when a years-of-experience phrase is present. Not in
+    # data_model.md; kept alongside seniority_signal so the deep report can quote it.
+    years_experience: int | None = None
+    requirements: list[Requirement] = Field(default_factory=list)
+    raw_text: str = ""
+
+
+# ---------------------------------------------------------------------------
 # Parseability metadata (data_model.md §2, resume_parsing_spec.md §3).
 # ---------------------------------------------------------------------------
 

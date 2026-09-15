@@ -1,0 +1,5 @@
+Data Scientist II, Growth Analytics
+
+We're looking for a data scientist to join our growth team. In this role you will design and analyze A/B tests, build statistical models to understand user retention, and work closely with product and marketing partners. You have 2-4 years of experience doing applied data science in a product company. You are fluent in SQL and Python (pandas, scikit-learn) and comfortable presenting findings to non-technical stakeholders. Experience with causal inference or Bayesian methods would be great but is not required. Familiarity with dbt and Airflow is a bonus.
+
+Our office is in Chicago and we offer a hybrid schedule. We provide medical, dental and vision coverage and a generous parental leave policy.
