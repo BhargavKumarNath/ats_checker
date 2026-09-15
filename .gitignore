@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Models / large artifacts (downloaded at build time, never committed)
+models/
+*.onnx
+*.npy
+!corpus/**/*.npy
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

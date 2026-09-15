@@ -26,6 +26,17 @@ These docs are binding. This file is not a summary of them, it's the rules that 
 - If a Tier 1 spec is ambiguous or contradicts another, stop and flag it rather than silently picking one interpretation.
 - Keep commits scoped and buildable, not one giant unreviewable drop.
 
-<!-- maintainer note: fill in real build/test/lint commands here once the stack is chosen. this section is the highest-value part of the file once it exists, don't leave it empty for long. -->
 ## Commands
-_TBD — populate once the tech stack is chosen in the first build session._
+Stack: Python 3.12, `uv`, FastAPI, Jinja2 + htmx. Decisions and status live in `docs/build_plan.md`, read it after the specs.
+
+```
+uv sync --group dev          # install everything
+uv run pytest                # tests
+uv run ruff check . && uv run ruff format --check .
+uv run mypy                  # strict on src/atsc
+uv run lint-imports          # cost-boundary import contract (must say "kept")
+uv run uvicorn atsc.web.app:app --reload
+docker build -t atsc . && docker run --rm -p 8080:8080 atsc
+```
+
+CI (`.github/workflows/ci.yml`) runs all of the above. `lint-imports` broken = the free path can reach a metered API = do not merge.

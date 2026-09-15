@@ -1,0 +1,73 @@
+[project]
+name = "atsc"
+version = "0.1.0"
+description = "ATS resume checker for ML/DS/AI roles: free deterministic scoring + paid RAG-grounded deep report."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.9",
+    "pydantic>=2.8",
+    "pydantic-settings>=2.4",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "httpx2>=0.1",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "import-linter>=2.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/atsc"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["error::DeprecationWarning:atsc.*"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "W", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src/atsc"]
+
+[[tool.mypy.overrides]]
+module = ["atsc.core.*"]
+strict = true
+
+# ---------------------------------------------------------------------------
+# Cost boundary, guard 1 (technical_architecture.md §6; CLAUDE.md non-negotiable 1).
+# Nothing reachable from a free-tier request may import a metered client.
+# `anthropic` and the Layer 2 generation/worker packages are the only places a
+# metered call can originate; core, free and web are forbidden from importing them.
+# ---------------------------------------------------------------------------
+[tool.importlinter]
+root_packages = ["atsc"]
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Free path never reaches a metered API"
+type = "forbidden"
+source_modules = ["atsc.core", "atsc.free", "atsc.web"]
+forbidden_modules = ["anthropic", "atsc.deep.generation", "atsc.deep.worker"]
+
+[[tool.importlinter.contracts]]
+name = "Core foundation does not depend on either layer"
+type = "forbidden"
+source_modules = ["atsc.core"]
+forbidden_modules = ["atsc.free", "atsc.deep", "atsc.web"]
