@@ -139,3 +139,15 @@ Append one entry per completed phase: what was built, what's left, anything deci
 **Decided (not in original docs):** taxonomy path resolves from `$ATSC_TAXONOMY_DIR`, else `<repo>/taxonomy`; Docker sets the env var and installs the project editable. A surface form may map to several clusters (Airflow, Databricks) and the matcher returns all of them. Canonical names are included as surface forms where they are natural phrasings ("deep learning framework"). Python and SQL clusters override the Classical DS category weights (Python = 1.0 on every track). Cluster ids are stable identifiers: never rename once shipped.
 
 **Left:** the embedding fallback is only tested against a fake embedder; Phase 3 adds the real model and a golden test for an unlisted phrasing. The similarity threshold (default 0.80) is a placeholder until Phase 3 measures real cosine distributions.
+
+### Phase 3 — Embedding service (complete, 2026-09-15)
+
+**Built:** `atsc.core.embedding.LocalEmbedder` (fastembed / ONNX Runtime, CPU, lazy load, L2-normalised float32 output, `dim` property) and `get_default_embedder()` singleton (model from `$ATSC_EMBEDDING_MODEL`, cache from `$ATSC_MODEL_CACHE_DIR`). Benchmark script `scripts/bench/embedding_bench.py` with labelled pairs `scripts/bench/pairs.json`. Docker image bakes the model in at build; verified a container embeds with `--network none` in 0.69 s including load. Real-model golden tests for the fallback added.
+
+**Model locked in: `BAAI/bge-small-en-v1.5`** (33M params, 384-dim, 67 MB). Benchmark (CPU, ONNX, 80-line batch, 4 threads): bge-small 270 ms / AUC 0.965; all-MiniLM-L6-v2 668 ms / AUC 0.985; arctic-embed-s 233 ms / AUC 0.970 but compressed similarity range; nomic-v1.5-Q 535 ms / AUC 0.968. Granite-small-r2 was dropped without benchmarking: not available in the ONNX runtime library, and running it would pull PyTorch into the free-tier image. Thread scaling for bge-small: 1 thread 907 ms, 2 threads 482 ms, 4 threads 260 ms per 80 lines. **Hosting consequence: Fly machine must be shared-cpu-2x or better.** Embedder uses `min(4, cpu_count)` threads.
+
+**Calibration inputs for Phase 6:** on labelled pairs, bge-small positive cosine mean 0.735 (min 0.549), negative mean 0.545 (max 0.715). Semantic-score rescale floor/ceiling should start around 0.50 / 0.85.
+
+**Finding on the embedding fallback (gap_analysis_spec.md §1 method 2):** with a 33M model, short unlisted phrasings do not separate cleanly by cosine (correct hits at 0.77–0.80, wrong-but-plausible hits at 0.78–0.81). Default `similarity_threshold` raised to **0.85** so the fallback is high-precision only. The real fix for recall is taxonomy growth (add the phrasing as a surface form), exactly as §4 of that spec prescribes. Several of my own "unlisted" probes turned out to contain exact surface forms, which is itself evidence the surface-form lists are the workhorse.
+
+**Left:** nothing for this phase. A dependency-footprint test guards against torch entering the free image.

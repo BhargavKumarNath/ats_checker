@@ -61,7 +61,7 @@ class ClusterMatcher:
         self,
         taxonomy: Taxonomy,
         embedder: Embedder | None = None,
-        similarity_threshold: float = 0.80,
+        similarity_threshold: float = 0.85,
     ) -> None:
         self.taxonomy = taxonomy
         self._embedder = embedder

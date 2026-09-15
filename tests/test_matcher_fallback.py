@@ -54,3 +54,23 @@ def test_exact_match_wins_and_is_reported_as_exact() -> None:
 def test_without_embedder_fallback_is_skipped() -> None:
     m = ClusterMatcher(load_taxonomy())
     assert m.match_phrases(["low-rank adapter training"]) == []
+
+
+# --- real model (Phase 3) ----------------------------------------------------
+
+
+def test_real_embedder_resolves_an_unlisted_phrasing_above_threshold() -> None:
+    from atsc.core.embedding import get_default_embedder
+
+    m = ClusterMatcher(load_taxonomy(), embedder=get_default_embedder())
+    hits = m.match_phrases(["experiment logging and run tracking"])
+    assert [(h.cluster_id, h.method) for h in hits] == [("experiment_tracking", "embedding")]
+
+
+def test_real_embedder_declines_a_plausible_but_wrong_phrasing() -> None:
+    # Phase 3 finding: on a 33M-param model this lands on classical_ml at ~0.79.
+    # The default threshold must be high enough that it does not fire.
+    from atsc.core.embedding import get_default_embedder
+
+    m = ClusterMatcher(load_taxonomy(), embedder=get_default_embedder())
+    assert m.match_phrases(["adapting a pretrained model with low-rank updates"]) == []
