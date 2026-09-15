@@ -237,3 +237,17 @@ The single hybrid miss was a corpus gap (a Spark bullet that only said "PySpark"
 - The Layer 2 model is not baked into the Layer 1 web image; the worker image (Phase 10) gets it.
 
 **Left:** corpus breadth. 67 bullets across 32 clusters is a seed; the growth loop (Phase 11) should add bullets where retrieval returns only the equivalence chunk. Next: Phase 9 generation.
+
+### Phase 9 — Layer 2 generation (complete, 2026-09-15)
+
+**Built:** `atsc.deep.models` (`Explanation`, `RewriteSuggestion`, `DeepReport` per `data_model.md` §6; `retrieved_context` and `grounding_examples` are `min_length=1`, so an ungrounded object cannot exist). `atsc.deep.generation` is the only module that imports the Anthropic SDK (positive-control test added to `test_cost_boundary.py`). Two structured-output calls per report via `client.messages.parse` with a Pydantic `output_format`, adaptive thinking, and a cached system prompt: one for explanations (every matched skill, every unmatched required skill, every failed parseability check), one for rewrites (up to six weakest resume bullets, chosen from `requirement_matches` below 70 with at least six words). Retrieval per item: the cluster's equivalence chunk plus its top strong bullets; platform quirks filtered to the selected platform for failed checks; strong bullets and rewrite pairs for the target requirement's clusters plus the keyword-density guidance for rewrites. **Grounding mechanism:** the model never writes grounding text. It receives numbered context items `[C1]…` and returns `context_ids` / `example_ids`; the code maps ids back to the verbatim corpus text. Empty or unknown ids raise `GroundingError` and the report is not produced. `atsc.deep.readability`: Flesch reading ease plus taxonomy-mention density; `readability_flag` is true when density rises by more than 0.02 and either reading ease drops by 10+ points or density exceeds 0.20. Fabrication guard: a rewrite that introduces a number absent from the original bullet is dropped. `atsc.deep.diff.rewrite_diff` emits a changed-lines-only diff with a note on flagged rewrites. `scripts/deep_report_smoke.py` runs one real report from the fixtures (spends tokens; owner-run). 16 tests, 170 total.
+
+**Decided (not in original docs):**
+- Model comes from `Settings.deep_llm_model` (`claude-sonnet-5`, owner decision) and is passed into the generator; the module never names a model.
+- Parseability findings are explained too, with `cluster_id = "check:<check_name>"`, grounded in the cited platform chunks. `data_model.md` §6 only lists skill explanations; this is additive and uses the same object.
+- Rewrites are only offered for existing weak bullets, never invented for missing skills: the corpus rule "never coach a claim the candidate cannot back" applies to generation as well.
+- `output_config.effort` is left at the API default rather than lowered: `messages.parse` sets `output_config.format` itself and the two cannot be verified to combine without a live call. Revisit in the smoke run.
+- Refusals (`stop_reason == "refusal"`) surface as `GenerationRefusedError`; truncation as `GenerationError`. Neither produces a partial report.
+- No live API call has been made. There is no credential on the build machine, and a metered call is the owner's to trigger; run `scripts/deep_report_smoke.py` once with a key to confirm prompt behaviour before Phase 10 wires payments.
+
+**Left:** prompt quality is unvalidated against the real model (see smoke script). Next: Phase 10 payments, worker and delivery.

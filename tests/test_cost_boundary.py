@@ -27,3 +27,10 @@ def test_free_package_is_importable_without_an_api_key(monkeypatch) -> None:
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     importlib.import_module("atsc.free")
     importlib.import_module("atsc.web.app")
+
+
+def test_generation_module_is_where_the_metered_client_lives() -> None:
+    """Positive control: the forbidden module really does import the SDK, so the contract bites."""
+    code = "import sys, atsc.deep.generation; print('anthropic' in sys.modules)"
+    out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, check=True)
+    assert out.stdout.strip() == "True"
