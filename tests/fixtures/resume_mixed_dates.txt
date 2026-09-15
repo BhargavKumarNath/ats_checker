@@ -1,0 +1,21 @@
+Sam Okafor
+sam.okafor@example.com | +1 646 555 0121 | New York, NY
+
+Experience
+Data Engineer — Contoso
+2023 – Present
+• Built Spark and dbt pipelines on Databricks processing 5 TB daily.
+
+Analytics Engineer — Initech
+03/2020 - 12/2022
+• Modeled the warehouse in BigQuery and maintained Airflow DAGs.
+
+Data Analyst — Globex
+June 2018 to February 2020
+• Built Tableau dashboards for the finance team.
+
+Education
+B.A. Economics — NYU, 2018
+
+Technical Skills
+SQL, Python, Spark, dbt, Airflow, BigQuery, Kafka

@@ -1,0 +1,36 @@
+Priya Natarajan
+Austin, TX · priya.natarajan@example.com · (512) 555-0143 · linkedin.com/in/priyanatarajan
+
+SUMMARY
+Machine learning engineer with 6 years of experience taking LLM and recommendation systems from research to production. Comfortable across training, serving and MLOps.
+
+EXPERIENCE
+Senior Machine Learning Engineer — Acme Robotics
+Austin, TX | Mar 2021 – Present
+• Fine-tuned Llama-3-8B with LoRA on 40k support transcripts, cutting escalation rate 18%.
+• Built a RAG pipeline over 2M internal documents using pgvector and LangChain; p95 latency 380 ms.
+• Served models with vLLM on Kubernetes, autoscaled with KEDA; handled 250 rps at peak.
+• Set up drift detection with Evidently and Grafana alerting for 12 production models.
+
+Machine Learning Engineer — Northwind Analytics
+Remote | Jun 2018 – Feb 2021
+• Trained gradient-boosted churn models in LightGBM on Spark-prepared features, lifting retention 4%.
+• Tracked 300+ experiments in MLflow and automated retraining with Airflow DAGs.
+• Deployed models as FastAPI services in Docker with CI/CD via GitHub Actions.
+
+EDUCATION
+M.S. Computer Science — University of Texas at Austin, 2018
+B.Tech Computer Science — NIT Trichy, 2016
+
+SKILLS
+Languages: Python, SQL, Go
+ML: PyTorch, scikit-learn, XGBoost, Hugging Face Transformers, PEFT
+LLM: RAG, vector search, prompt engineering, DPO
+Infra: Docker, Kubernetes, AWS SageMaker, MLflow, Airflow, Spark
+
+PROJECTS
+Open-source reranker for hybrid retrieval (BM25 + dense)
+• Cross-encoder reranker that improved recall@10 by 11 points on BEIR subsets.
+
+CERTIFICATIONS
+AWS Certified Machine Learning – Specialty, 2022

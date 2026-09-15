@@ -1,0 +1,17 @@
+Jordan Lee
+jordan.lee@example.com | 415-555-0199 | San Francisco, CA
+
+WHO I AM
+Data scientist who likes causal questions and clean experiments.
+
+MY JOURNEY
+Data Scientist — Fabrikam
+Jan 2022 – Present
+• Designed A/B tests and computed lift with bootstrapped confidence intervals.
+• Estimated treatment effects with causal forests on observational data.
+
+TOOLBOX
+Python, pandas, statsmodels, scikit-learn, SQL, dbt, Looker
+
+WHERE I STUDIED
+B.S. Statistics — UC Davis, 2021

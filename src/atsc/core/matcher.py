@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Literal
 
 import numpy as np
@@ -140,3 +141,11 @@ def _drop_nested(matches: list[Match]) -> list[Match]:
         kept.append(m)
     kept.sort(key=lambda m: (m.start, m.cluster_id))
     return kept
+
+
+@lru_cache(maxsize=1)
+def get_default_matcher() -> ClusterMatcher:
+    """Process-wide exact matcher over the default taxonomy (no embedder: exact only)."""
+    from atsc.core.taxonomy import load_taxonomy
+
+    return ClusterMatcher(load_taxonomy())

@@ -151,3 +151,21 @@ Append one entry per completed phase: what was built, what's left, anything deci
 **Finding on the embedding fallback (gap_analysis_spec.md §1 method 2):** with a 33M model, short unlisted phrasings do not separate cleanly by cosine (correct hits at 0.77–0.80, wrong-but-plausible hits at 0.78–0.81). Default `similarity_threshold` raised to **0.85** so the fallback is high-precision only. The real fix for recall is taxonomy growth (add the phrasing as a surface form), exactly as §4 of that spec prescribes. Several of my own "unlisted" probes turned out to contain exact surface forms, which is itself evidence the surface-form lists are the workhorse.
 
 **Left:** nothing for this phase. A dependency-footprint test guards against torch entering the free image.
+
+### Phase 4 — Resume parsing (complete, 2026-09-15)
+
+**Built:** `atsc.core.parsing` package: `text.py` (cleaning, bullet glyphs, mojibake), `dates.py` (date tokens with style family text/numeric/year, ranges, normalisation to `YYYY-MM`/`YYYY`/`present`), `sections.py` (alias + word-level fuzzy header detection; ALL-CAPS unknown lines are "creative" headers), `entities.py` (basics via regex with spaCy PERSON fallback; work entries from date-headed blocks with title/company split; education; skills with category-prefix stripping and cluster matching; projects), `checks.py` (platform severity table, the two text-level checks, `build_report` always emitting all eight checks), `pdf.py` (pdfplumber: column gutter + shared-row detection, ruled tables, symbol/Type 3/unmapped-glyph fonts, image-only, contact info in repeated margins), `docx_reader.py` (body-order paragraphs and tables, `w:txbxContent` text boxes, `w:cols` sections, header/footer parts, symbol fonts), facade `parse_resume_text` / `parse_resume_file` with byte-sniffed format and `UnsupportedFormatError` carrying the plain-language decline. `atsc.core.nlp` spaCy singleton (NER only, lazy). Models added to `atsc.core.models` for `data_model.md` §1–2. Fixture generator `scripts/make_fixtures.py` produces 11 PDF/DOCX fixtures (committed). Timings: text 7 ms, clean PDF 55 ms, two-column PDF 170 ms, DOCX 21 ms.
+
+**Decided (not in original docs):**
+- `header_footer_content` added as an eighth check name: it is in `resume_parsing_spec.md` §2's detection list but missing from `data_model.md`'s enum.
+- Check status has a third value `not_assessed`; pasted text leaves six layout checks unassessed. PDFs leave `text_box_detected` unassessed (not distinguishable in a text stream).
+- `SkillEntry.matched_clusters` is a list, not the spec's scalar: a surface form can belong to two clusters.
+- `inconsistent_dates` is judged over work-experience ranges only; year-only education dates are conventional and not penalised.
+- Content inside DOCX tables, text boxes and headers **is** extracted and scored, and the check explains the risk. Simulating the drop would make the score confusing ("why is my email missing?") rather than instructive.
+- PDF text uses pdfplumber's linear extraction as-is, so two-column resumes are scored on the scrambled text an ATS would see.
+- `non_standard_font` fails only on evidence of unreadable text: symbol/icon fonts (ZapfDingbats, Wingdings, FontAwesome), Type 3 fonts, or >1% glyphs without a Unicode mapping. Merely unusual families are not penalised: they extract fine.
+- Title-case unknown lines are never section headers (job titles look identical); only ALL-CAPS unknown lines are. Inside an experience section a caps line followed within two lines by a date range is treated as an employer name, not a header.
+- Lines of the form `Label: items` or containing commas are never headers.
+- spaCy NER is a fallback only (name when the first lines don't look like a name; ORG tie-break for title/company). The small model mislabels "Austin, TX", so regex/structure lead.
+
+**Left:** borderless (whitespace-aligned) tables in PDFs are not detected; only ruled tables are. Certifications are parsed into `raw_text` only (no data-model field). Both are noted, not blockers.
