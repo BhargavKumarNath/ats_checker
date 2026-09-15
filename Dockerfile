@@ -18,5 +18,7 @@ RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --no-dev
 ENV PATH="/app/.venv/bin:$PATH" PORT=8080 ATSC_TAXONOMY_DIR=/app/taxonomy ATSC_MODEL_CACHE_DIR=/app/models
 # Bake the Layer 1 embedding model into the image: no download at request time, ever.
 RUN python -c "from atsc.core.scoring import warm; warm()"
+# Bake the Layer 2 retrieval embedding model as well: the worker shares this image.
+RUN python -c "from atsc.deep.retrieval import get_default_index; get_default_index()"
 EXPOSE 8080
 CMD ["sh", "-c", "uvicorn atsc.web.app:app --host 0.0.0.0 --port ${PORT}"]

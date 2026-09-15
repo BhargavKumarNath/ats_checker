@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Detailed report{% endblock %}
+{% block content %}
+<section class="hero grid">
+  <div class="col-8" id="status"{% if job.status in ("queued", "running") %} hx-get="/report/{{ token }}/status" hx-trigger="every 5s" hx-swap="innerHTML"{% endif %}>
+    <h1>{% if job.status in ("queued", "running") %}Your report is being written.{% elif job.status == "failed" %}This report could not be produced.{% else %}This report has not been paid for.{% endif %}</h1>
+    {% include "partials/report_status.html" %}
+  </div>
+</section>
+{% endblock %}

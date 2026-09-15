@@ -22,6 +22,30 @@ class Settings(BaseSettings):
     max_upload_bytes: int = 2_000_000  # resume files above this are refused with a 413
     warm_on_start: bool = True  # load the embedding model in the lifespan, not on first request
 
+    # Layer 2 persistence and delivery (build_plan.md §3: Postgres in production, SQLite locally).
+    database_url: str = "sqlite:///./atsc.db"
+    public_base_url: str = "http://127.0.0.1:8000"  # used in Stripe redirect URLs and emails
+
+    # Stripe Checkout, one-time payment (product_requirements.md §3: never a subscription).
+    # All three must be set for the paid path to be offered; otherwise the CTA explains it is off.
+    stripe_secret_key: str = ""
+    stripe_price_id: str = ""
+    stripe_webhook_secret: str = ""
+
+    # Report link email. Unset SMTP host = links are logged, not sent.
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    email_from: str = ""
+
+    # Worker polling interval in seconds.
+    worker_poll_seconds: float = 3.0
+
+    @property
+    def payments_enabled(self) -> bool:
+        return bool(self.stripe_secret_key and self.stripe_price_id and self.stripe_webhook_secret)
+
 
 def get_settings() -> Settings:
     return Settings()

@@ -22,6 +22,7 @@ from atsc.core.scoring import (
     WEIGHT_TAXONOMY,
 )
 from atsc.core.taxonomy import load_taxonomy
+from atsc.deep.handoff import JobInputs, encode_inputs
 from atsc.free.presentation import (
     CHECK_LABELS,
     GENERIC_LABEL,
@@ -134,6 +135,15 @@ async def score_endpoint(
         else ("job description" if result.role_track else None),
         "platform_label": PLATFORM_LABELS[result.platform] if result.platform else GENERIC_LABEL,
         "requirement_count": len(outcome.jd.requirements),
+        "payload": (
+            encode_inputs(
+                JobInputs(
+                    resume=outcome.resume, report=outcome.report, jd=outcome.jd, result=result
+                )
+            )
+            if settings.payments_enabled
+            else None
+        ),
     }
     name = "partials/result.html" if _is_htmx(request) else "index.html"
     return templates.TemplateResponse(request, name, ctx)

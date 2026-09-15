@@ -184,6 +184,15 @@ tbody tr:last-child th, tbody tr:last-child td { border-bottom: 1px solid var(--
 .prose p { margin-top: 12px; }
 .prose .components { margin-bottom: 8px; }
 
+/* Deep report ------------------------------------------------------------ */
+.entry { padding: 16px 0; border-bottom: 1px solid var(--hairline); }
+.entry h3 { font-size: var(--step-0); font-weight: 500; margin-bottom: 4px; }
+.entry:last-child { border-bottom: 1px solid var(--ink); }
+details { margin-top: 8px; }
+summary { cursor: pointer; font-size: var(--step--1); color: var(--grey-text); }
+q.ground { display: block; margin-top: 8px; padding-left: 12px; border-left: 1px solid var(--hairline); color: var(--grey-text); }
+.cta-cell form { margin: 0; }
+
 /* Print ----------------------------------------------------------------- */
 @media print {
   html { background: #fff; }

@@ -1,0 +1,9 @@
+{% if job.status == "awaiting_payment" %}
+<p class="standfirst">Payment was not completed{% if cancelled %} (you cancelled at checkout){% endif %}. Nothing has been generated and nothing was charged. Run the free check again to start over.</p>
+<p><a href="/">Back to the free check</a></p>
+{% elif job.status in ("queued", "running") %}
+<p class="standfirst">Generating your report. This usually takes under two minutes. This page refreshes itself; if you gave an email at checkout, the link is sent there too.</p>
+<p class="muted">Status: {{ "in progress" if job.status == "running" else "queued" }}</p>
+{% elif job.status == "failed" %}
+<p class="standfirst">Something went wrong while generating this report and it was not produced. Reply to your receipt email and the charge will be refunded.</p>
+{% endif %}

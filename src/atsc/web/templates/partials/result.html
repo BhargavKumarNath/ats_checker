@@ -112,7 +112,14 @@
         <p>The detailed report goes line by line: a rewrite for each weak or missing item, each one grounded in a quoted source passage, plus a keyword-stuffing check.</p>
       </div>
       <div class="col-5 cta-cell">
+        {% if payload %}
+        <form method="post" action="/report/checkout">
+          <input type="hidden" name="payload" value="{{ payload }}">
+          <button type="submit" class="cta">Get the detailed report</button>
+        </form>
+        {% else %}
         <a class="cta" href="/report">Get the detailed report</a>
+        {% endif %}
       </div>
     </div>
   </section>

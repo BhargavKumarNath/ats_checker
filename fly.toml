@@ -29,8 +29,17 @@ primary_region = "iad"
 
 [processes]
   web = "uvicorn atsc.web.app:app --host 0.0.0.0 --port 8080"
+  # The only process group that receives ANTHROPIC_API_KEY (fly secrets are per app, so
+  # set the key as a secret and unset it on the web group with `fly secrets ... --stage`
+  # or scope via `[[vm]] processes`; see docs/build_plan.md Phase 10).
+  worker = "python -m atsc.deep.worker"
 
 [[vm]]
   size = "shared-cpu-2x"   # Phase 3 thread scaling: 2 vCPU keeps a two-page resume under 1 s
   memory = "2gb"
   processes = ["web"]
+
+[[vm]]
+  size = "shared-cpu-2x"
+  memory = "2gb"
+  processes = ["worker"]

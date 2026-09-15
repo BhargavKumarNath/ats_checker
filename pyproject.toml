@@ -19,6 +19,8 @@ dependencies = [
     "en-core-web-sm",
     "rank-bm25>=0.2.2",
     "anthropic>=1.6.0",
+    "stripe>=15.6.1",
+    "sqlalchemy>=2.0.54",
 ]
 
 [dependency-groups]

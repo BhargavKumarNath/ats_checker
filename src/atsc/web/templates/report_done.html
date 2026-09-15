@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Detailed report{% endblock %}
+{% block content %}
+{% set r = report.score_result %}
+<article class="sheet">
+  <div class="grid sheet-head">
+    <div class="col-5">
+      <p class="score-number">{{ r.overall_score }}</p>
+      <p class="score-caption">alignment with this job description, out of 100</p>
+    </div>
+    <div class="col-7">
+      <table class="components">
+        <tbody>
+          <tr><th scope="row">Semantic match</th><td class="num">{{ r.components.semantic_match_score }}</td></tr>
+          <tr><th scope="row">Skill overlap</th><td class="num">{{ r.components.taxonomy_overlap_score }}</td></tr>
+          <tr><th scope="row">Parseability</th><td class="num">{{ r.components.parseability_score }}</td></tr>
+        </tbody>
+      </table>
+      <dl class="meta">
+        <dt>Generated</dt><dd>{{ report.generated_at.strftime("%d %b %Y, %H:%M UTC") }}</dd>
+        <dt>Grounding</dt><dd>every explanation and rewrite below quotes the corpus passages it rests on</dd>
+      </dl>
+    </div>
+  </div>
+  <p class="disclaimer">{{ DISCLAIMER }}</p>
+
+  <section class="block">
+    <h2>Why each skill scored the way it did <span class="count">{{ report.explanations | length }}</span></h2>
+    {% for e in report.explanations %}
+    <div class="entry">
+      <h3>{{ names.get(e.cluster_id, e.cluster_id) }}</h3>
+      <p>{{ e.explanation_text }}</p>
+      <details>
+        <summary>Grounding ({{ e.retrieved_context | length }})</summary>
+        {% for c in e.retrieved_context %}<q class="ground">{{ c }}</q>{% endfor %}
+      </details>
+    </div>
+    {% endfor %}
+  </section>
+
+  <section class="block">
+    <h2>Rewrites for the weakest lines <span class="count">{{ report.rewrite_suggestions | length }}</span></h2>
+    <p class="lede">Each rewrite keeps every fact of the original. A flagged rewrite raises keyword density at the cost of readability; use it with care or not at all.</p>
+    {% if report.rewrite_suggestions %}
+    <table class="evidence">
+      <thead><tr><th>Original</th><th>Suggested</th></tr></thead>
+      <tbody>
+      {% for s in report.rewrite_suggestions %}
+        <tr>
+          <td><q>{{ s.original_bullet }}</q></td>
+          <td>
+            <q>{{ s.suggested_rewrite }}</q>
+            {% if s.readability_flag %}<p class="missing small">Flagged: denser in keywords, harder to read.</p>{% endif %}
+            <details>
+              <summary>Grounding ({{ s.grounding_examples | length }})</summary>
+              {% for g in s.grounding_examples %}<q class="ground">{{ g }}</q>{% endfor %}
+            </details>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <p class="small"><a href="/report/{{ token }}/diff">Download the changed lines as a diff</a></p>
+    {% else %}
+    <p class="empty">No rewrites: no resume line scored low enough against a requirement to need one.</p>
+    {% endif %}
+  </section>
+</article>
+{% endblock %}

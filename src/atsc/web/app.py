@@ -15,6 +15,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from atsc.config import get_settings
+from atsc.web.report import router as report_router
 from atsc.web.routes import router
 
 STATIC_DIR = Path(__file__).parent / "static"
@@ -36,6 +37,7 @@ def create_app(*, warm: bool | None = None) -> FastAPI:
     app.state.settings = settings
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
     app.include_router(router)
+    app.include_router(report_router)
 
     @app.get("/healthz")
     def healthz() -> dict[str, str]:
