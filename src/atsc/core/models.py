@@ -178,3 +178,62 @@ class ParseabilityReport(BaseModel):
     @property
     def assessed(self) -> list[ParseabilityCheck]:
         return [c for c in self.checks if c.status != "not_assessed"]
+
+
+# ---------------------------------------------------------------------------
+# Score output (data_model.md §5, ats_scoring_spec.md §5-6).
+# ---------------------------------------------------------------------------
+
+# Fixed text per ats_scoring_spec.md §6. Never reworded to imply outcomes.
+DISCLAIMER = (
+    "This score measures keyword and skill alignment between this resume and this specific "
+    "job description. It is not a prediction of interview odds or hiring outcomes."
+)
+
+
+class ScoreComponents(BaseModel):
+    semantic_match_score: int = Field(ge=0, le=100)
+    taxonomy_overlap_score: int = Field(ge=0, le=100)
+    parseability_score: int = Field(ge=0, le=100)
+
+
+class MatchedSkill(BaseModel):
+    cluster_id: str
+    canonical_name: str
+    resume_evidence: str
+    jd_evidence: str
+
+
+class UnmatchedSkill(BaseModel):
+    cluster_id: str
+    canonical_name: str
+    jd_evidence: str
+
+
+class RequirementMatch(BaseModel):
+    """Line-level semantic evidence (spec §2.1): the resume line closest to one JD requirement.
+
+    Not in data_model.md's ScoreResult; added so the semantic component is as
+    decomposable as the taxonomy one (build_plan.md Phase 6 note).
+    """
+
+    jd_text: str
+    requirement_type: RequirementType
+    resume_line: str | None
+    similarity: float
+    score: int = Field(ge=0, le=100)
+
+
+class ScoreResult(BaseModel):
+    overall_score: int = Field(ge=0, le=100)
+    components: ScoreComponents
+    matched_skills: list[MatchedSkill] = Field(default_factory=list)
+    unmatched_required_skills: list[UnmatchedSkill] = Field(default_factory=list)
+    # Additive to the spec: the UI lists preferred gaps too, labelled as such.
+    unmatched_preferred_skills: list[UnmatchedSkill] = Field(default_factory=list)
+    requirement_matches: list[RequirementMatch] = Field(default_factory=list)
+    parseability_issues: list[ParseabilityCheck] = Field(default_factory=list)
+    # Which role-track weighting was applied (selector value, else JD signal, else none).
+    role_track: RoleTrack | None = None
+    platform: Platform | None = None
+    disclaimer: str = DISCLAIMER
