@@ -1,0 +1,90 @@
+category: Classical Data Science
+strong:
+  - cluster_id: statistical_modeling
+    role_tracks: [data_scientist]
+    text: >-
+      Designed and analysed 30+ A/B tests a year with sequential testing and CUPED variance reduction, cutting required sample sizes by 35%.
+    why: >-
+      Method names, volume and a methodological improvement with a number.
+  - cluster_id: statistical_modeling
+    text: >-
+      Estimated the causal effect of a pricing change with difference-in-differences on 1.8M customers, informing a rollout worth 2% of annual revenue.
+    why: >-
+      Causal method, data scale and decision impact.
+  - cluster_id: classical_ml
+    role_tracks: [data_scientist, mle]
+    text: >-
+      Trained gradient-boosted churn models in LightGBM on 200 engineered features, lifting 90-day retention 4% in a controlled rollout.
+    why: >-
+      Library, feature scale, and an outcome measured properly.
+  - cluster_id: classical_ml
+    text: >-
+      Built a scikit-learn pipeline with cross-validated feature selection for demand forecasting, reducing mean absolute error 18% against the incumbent model.
+    why: >-
+      Tool, technique and a metric against a named baseline.
+  - cluster_id: data_eng_tooling
+    role_tracks: [data_engineer, mle]
+    text: >-
+      Rewrote a nightly feature pipeline from pandas to Spark (PySpark), processing 3 TB in 40 minutes instead of failing at scale.
+    why: >-
+      Migration with volume and time, plus the reason it was needed.
+  - cluster_id: data_eng_tooling
+    text: >-
+      Replaced ad-hoc SQL extracts with dbt models and DuckDB local development, cutting analyst onboarding from two weeks to two days.
+    why: >-
+      Tools named with a people-facing outcome.
+  - cluster_id: python_data_stack
+    text: >-
+      Maintained the team's Python data library (pandas, NumPy, 85% test coverage) used by 40 analysts, with type-checked interfaces and a documented release process.
+    why: >-
+      Evidence of software craft around the data stack, not just usage.
+  - cluster_id: python_data_stack
+    role_tracks: [data_scientist]
+    text: >-
+      Profiled and vectorised a NumPy-based scoring routine, cutting a 6-hour batch run to 25 minutes.
+    why: >-
+      A specific engineering intervention with a large measured gain.
+  - cluster_id: sql
+    role_tracks: [data_scientist, data_engineer]
+    text: >-
+      Optimised the core analytics queries in PostgreSQL (partitioning, covering indexes), bringing the daily reporting run from 3 hours to 20 minutes.
+    why: >-
+      Database, techniques and a before-and-after time.
+  - cluster_id: sql
+    text: >-
+      Built the customer-lifetime-value dataset in BigQuery SQL from 14 source tables with tested data-quality assertions, now used by three teams.
+    why: >-
+      Scope, quality controls and adoption.
+  - cluster_id: visualization_bi
+    role_tracks: [data_scientist]
+    text: >-
+      Built executive Tableau dashboards for marketing efficiency that replaced weekly slide decks; used in every quarterly planning cycle since.
+    why: >-
+      Names the tool, the audience, and shows the artefact stuck.
+  - cluster_id: visualization_bi
+    text: >-
+      Designed a Looker semantic layer with 60 governed metrics, ending duplicate KPI definitions across four teams.
+    why: >-
+      A BI outcome that reads as data governance, not chart-making.
+pairs:
+  - cluster_id: statistical_modeling
+    weak: >-
+      Performed statistical analysis on user data.
+    strong: >-
+      Ran A/B tests on checkout changes with power analysis and sequential monitoring; one test found a 3.2% conversion lift that shipped to all users.
+    why: >-
+      Method, rigour and one concrete result.
+  - cluster_id: sql
+    weak: >-
+      Proficient in SQL.
+    strong: >-
+      Wrote and maintained the SQL models behind the company's core revenue metrics in Postgres, including the partitioning that cut daily reporting from hours to minutes.
+    why: >-
+      Proficiency shown through ownership and an engineering result.
+  - cluster_id: classical_ml
+    weak: >-
+      Built machine learning models to predict customer behaviour.
+    strong: >-
+      Built a gradient-boosted churn model (XGBoost, 0.87 AUC) whose top decile targeting cut churn 11% in a holdout-controlled campaign.
+    why: >-
+      Specifies the algorithm, the metric and the measured business effect.

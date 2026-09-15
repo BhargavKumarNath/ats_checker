@@ -14,6 +14,9 @@ class Settings(BaseSettings):
 
     # Layer 2 runtime LLM. Owner decision 2026-09-15: sonnet-5 by default, never hardcoded.
     deep_llm_model: str = "claude-sonnet-5"
+    # Layer 2 retrieval embeddings (self-hosted, ONNX). Larger than Layer 1's model because
+    # latency tolerance is high; see build_plan.md Phase 8 for why not Qwen3/bge-m3.
+    deep_embedding_model: str = "BAAI/bge-base-en-v1.5"
 
     # Layer 1 web process.
     max_upload_bytes: int = 2_000_000  # resume files above this are refused with a 413

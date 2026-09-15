@@ -1,0 +1,35 @@
+- topic: keyword density versus readability
+  source: product_requirements.md §5 item 5
+  text: >-
+    A bullet that repeats a keyword or crams in every phrasing of the same skill can score well with a scanner and read badly to the recruiter who opens the file next. Name a skill once, in the phrasing the posting uses, inside a sentence that says what you did with it. If a rewrite raises keyword density but makes the line harder to read aloud, that is a readability problem, not an improvement.
+- topic: quantify the outcome
+  text: >-
+    The strongest bullets name a method, a scale and a measured result, for example a metric before and after, a latency, a cost, a volume, or a time saved. A number turns a claim into evidence. If no number exists, name the scope (how many models, users, teams) or the decision the work informed.
+- topic: match the posting's phrasing without lying
+  text: >-
+    When a posting says "parameter-efficient fine-tuning" and your resume says "LoRA", the checker treats them as the same skill, but a human skimming may not. Where it is true, use the posting's phrasing once. Never add a skill you have not used; every line must be one you can defend in conversation.
+- topic: one skill per bullet, one claim per sentence
+  text: >-
+    Bullets that list six tools in a row read as a keyword dump. Prefer one bullet per accomplishment, naming the one or two tools that mattered, and keep the tool list for the Skills section.
+- topic: standard section headers
+  source: resume_parsing_spec.md §3
+  text: >-
+    Applicant tracking systems find sections by their labels. Use Experience, Education, Skills, Projects and Summary. Creative labels such as "My journey" or "Toolbox" may not be recognised, and their content can be misfiled.
+- topic: one date format everywhere
+  source: resume_parsing_spec.md §3
+  text: >-
+    Tenure is computed from parsed dates. Use the same format for every role, month and year (for example "Mar 2021 – Present"), and never mix numeric and written months in one resume.
+- topic: skills section as a plain list
+  text: >-
+    Write the Skills section as plain comma-separated words grouped by category, not as bars, ratings, icons or a table. Group names (Languages, ML, Infrastructure) help a human; the parser only needs the words.
+- topic: lead with the most relevant experience
+  text: >-
+    Parsers do not care about order, but the person who reads the parsed text does. Put the role and the bullets that best match the posting's required skills first within each section, and move older or less relevant work lower.
+- topic: single-column, no tables, no text boxes
+  source: resume_parsing_spec.md §3
+  text: >-
+    The four formatting failures most consistently documented across ATS research are multi-column layouts, tables, non-standard fonts and image-based PDFs. A single-column document in a standard font, exported as a text PDF or .docx, avoids all four.
+- topic: what the score does and does not mean
+  source: ats_scoring_spec.md §6
+  text: >-
+    The score measures keyword and skill alignment with one specific job description and how cleanly the file parses. It is not a prediction of hiring outcomes. Two resumes with the same score can be received very differently; use the matched and missing lists to decide what to change, not the number alone.

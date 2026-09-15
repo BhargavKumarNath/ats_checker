@@ -1,0 +1,96 @@
+category: Core ML Foundations
+strong:
+  - cluster_id: dl_frameworks
+    role_tracks: [mle, ml_research]
+    text: >-
+      Rebuilt a PyTorch training loop with mixed precision and torch.compile, cutting epoch time 41% on 8×A100 without changing model quality.
+    why: >-
+      Names the framework, the two concrete techniques, the hardware scale and a measured speedup.
+  - cluster_id: dl_frameworks
+    role_tracks: [applied_scientist]
+    text: >-
+      Ported a production ranking model from TensorFlow 1 to PyTorch, adding unit tests for every layer; offline NDCG matched to four decimals before cutover.
+    why: >-
+      Shows migration work with a verification standard rather than "migrated the model".
+  - cluster_id: dl_frameworks
+    text: >-
+      Implemented custom JAX transformations for a diffusion sampler, reaching 2.3× throughput over the reference implementation on TPU v5e.
+    why: >-
+      A less common framework named precisely, with a benchmark against a stated baseline.
+  - cluster_id: peft
+    role_tracks: [mle, applied_scientist]
+    text: >-
+      Fine-tuned Llama-3-8B with QLoRA (rank 16) on 40k labelled support transcripts, lifting intent-classification F1 from 0.81 to 0.91 at one-fifth the GPU cost of full fine-tuning.
+    why: >-
+      Method, adapter setting, data size, metric before and after, and the cost argument for choosing PEFT.
+  - cluster_id: peft
+    text: >-
+      Ran a LoRA versus full fine-tuning ablation across four task datasets and documented where adapters lost accuracy, which set the team's default training recipe.
+    why: >-
+      Demonstrates judgement about when the technique applies, not just that it was used.
+  - cluster_id: distributed_training
+    role_tracks: [mle, ml_research]
+    text: >-
+      Scaled pretraining of a 1.3B-parameter model to 64 GPUs with FSDP and activation checkpointing, holding 78% scaling efficiency versus single-node.
+    why: >-
+      Names the parallelism strategy, the scale, and the efficiency number that shows it was done well.
+  - cluster_id: distributed_training
+    text: >-
+      Migrated a multi-node training job from DDP to DeepSpeed ZeRO-3, fitting a model 2.5× larger in the same cluster memory budget.
+    why: >-
+      Explains the technical reason for the change and the concrete capacity gain.
+  - cluster_id: transformers_architecture
+    role_tracks: [ml_research, applied_scientist]
+    text: >-
+      Designed a two-tower transformer encoder for product search with shared attention layers, improving recall@10 by 6.4 points over the BM25 baseline in offline evaluation.
+    why: >-
+      Architecture decision stated precisely with the baseline it beat.
+  - cluster_id: transformers_architecture
+    text: >-
+      Replaced a BiLSTM tagger with a fine-tuned BERT model for entity extraction, raising span F1 from 0.84 to 0.92 on the internal benchmark.
+    why: >-
+      Shows an architecture change tied to a named metric on a stated benchmark.
+  - cluster_id: computer_vision
+    text: >-
+      Trained a YOLOv8 object detector on 120k annotated warehouse frames, reaching 0.93 mAP@0.5 and running at 30 fps on an edge GPU.
+    why: >-
+      Data scale, accuracy metric and deployment constraint in one line.
+  - cluster_id: computer_vision
+    role_tracks: [applied_scientist]
+    text: >-
+      Built a defect-segmentation pipeline (U-Net, test-time augmentation) that cut manual inspection hours by 60% across three production lines.
+    why: >-
+      Method plus a business outcome that a hiring manager can picture.
+  - cluster_id: nlp
+    text: >-
+      Shipped a multilingual text-classification service (XLM-R, 12 languages) handling 4M messages a day at 0.94 macro-F1.
+    why: >-
+      Model, coverage, volume and quality metric.
+  - cluster_id: nlp
+    role_tracks: [data_scientist, applied_scientist]
+    text: >-
+      Built a named-entity recognition model for clinical notes with spaCy and a custom labelling scheme, reaching 0.89 entity-level F1 on a held-out set of 5k documents.
+    why: >-
+      Names the task, the tool, the evaluation set size and the metric.
+pairs:
+  - cluster_id: peft
+    weak: >-
+      Worked on fine-tuning LLMs.
+    strong: >-
+      Fine-tuned a 7B open-weight model with LoRA on 12k internal Q&A pairs, improving answer accuracy from 71% to 86% on a held-out set.
+    why: >-
+      Adds the method, the scale of data and a before-and-after metric; nothing is claimed that was not implied by "fine-tuning LLMs".
+  - cluster_id: dl_frameworks
+    weak: >-
+      Experience with PyTorch and TensorFlow.
+    strong: >-
+      Trained and shipped three PyTorch models to production over two years, including a TensorFlow-to-PyTorch migration verified to identical offline metrics.
+    why: >-
+      Turns a tool list into evidence of use at production scale.
+  - cluster_id: transformers_architecture
+    weak: >-
+      Used transformer models for NLP tasks.
+    strong: >-
+      Fine-tuned DeBERTa-v3 for a 40-class ticket-routing task, reaching 0.90 accuracy and replacing a rules engine with 300 hand-written patterns.
+    why: >-
+      Names the model, the task shape, the result and what it replaced.

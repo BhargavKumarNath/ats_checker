@@ -1,0 +1,90 @@
+category: MLOps & Lifecycle
+strong:
+  - cluster_id: experiment_tracking
+    text: >-
+      Standardised experiment tracking on MLflow for a 12-person team, logging 3,000+ runs with reproducible configs and enabling one-click promotion to the model registry.
+    why: >-
+      Tool, team scale, run volume and the workflow it enabled.
+  - cluster_id: experiment_tracking
+    role_tracks: [ml_research, applied_scientist]
+    text: >-
+      Ran 400 hyperparameter sweeps in Weights & Biases with Bayesian search, finding a configuration that beat the tuned baseline by 2.1 points at half the training cost.
+    why: >-
+      Shows experiment tracking used for a result, not just record-keeping.
+  - cluster_id: orchestration
+    role_tracks: [mle, data_engineer]
+    text: >-
+      Built nightly retraining and evaluation pipelines in Airflow with data-quality gates that blocked three bad deployments in the first quarter.
+    why: >-
+      Orchestration tied to a safety outcome with a count.
+  - cluster_id: orchestration
+    text: >-
+      Migrated 40 Kubeflow pipelines to Prefect with typed task interfaces, cutting pipeline failures 70% and median run time 25%.
+    why: >-
+      Scale of the migration and two measured improvements.
+  - cluster_id: cloud_ml_platforms
+    text: >-
+      Deployed a real-time fraud model on SageMaker endpoints with multi-model hosting and canary rollouts, serving 800 requests per second at p99 under 60 ms.
+    why: >-
+      Platform features named specifically, with throughput and latency.
+  - cluster_id: cloud_ml_platforms
+    role_tracks: [mle, data_engineer]
+    text: >-
+      Built the team's training platform on Vertex AI Pipelines with managed datasets and model registry, cutting time from experiment to production from three weeks to four days.
+    why: >-
+      Cycle-time result, which is what a platform is for.
+  - cluster_id: containers_deploy
+    text: >-
+      Containerised eight model services with Docker and deployed them on Kubernetes with Helm charts and GitHub Actions CI/CD, reaching 15 deploys a week with zero-downtime rollouts.
+    why: >-
+      The full deployment toolchain plus a delivery-frequency outcome.
+  - cluster_id: containers_deploy
+    role_tracks: [mle]
+    text: >-
+      Cut model image size from 6.1 GB to 900 MB with multi-stage builds and ONNX Runtime, reducing cold-start time from 90 s to 12 s on autoscaled pods.
+    why: >-
+      Concrete engineering with before-and-after numbers.
+  - cluster_id: monitoring
+    text: >-
+      Built drift detection with Evidently and Grafana alerting for 12 production models, catching a feature-pipeline break within 20 minutes that had previously gone unnoticed for days.
+    why: >-
+      Tools, scope and an incident that shows the monitoring worked.
+  - cluster_id: monitoring
+    role_tracks: [mle, data_scientist]
+    text: >-
+      Defined model-performance SLOs and a weekly review using live labels, retiring two models whose AUC had decayed below threshold.
+    why: >-
+      Monitoring turned into a decision process with outcomes.
+  - cluster_id: feature_stores
+    role_tracks: [mle, data_engineer]
+    text: >-
+      Introduced Feast as the feature store for four teams, removing training-serving skew that had caused a 3-point online drop in one model.
+    why: >-
+      Tool named with the specific problem it solved.
+  - cluster_id: feature_stores
+    text: >-
+      Versioned datasets and models with DVC on S3 so every production model could be rebuilt from its exact inputs; used in two incident investigations.
+    why: >-
+      Data versioning explained through its purpose and a real use.
+pairs:
+  - cluster_id: containers_deploy
+    weak: >-
+      Deployed models using Docker and Kubernetes.
+    strong: >-
+      Deployed five model services as Docker images on Kubernetes with Helm, adding health checks and horizontal autoscaling that held p95 latency under 200 ms through a 4× traffic spike.
+    why: >-
+      Same tools, now with scope, the resilience features and evidence they worked.
+  - cluster_id: monitoring
+    weak: >-
+      Responsible for monitoring ML models.
+    strong: >-
+      Set up data-drift and latency monitoring for nine production models with paging thresholds, cutting mean time to detect silent failures from days to under an hour.
+    why: >-
+      Names the signals monitored and quantifies the improvement.
+  - cluster_id: orchestration
+    weak: >-
+      Wrote Airflow DAGs.
+    strong: >-
+      Built and owned 20 Airflow DAGs for feature computation and nightly retraining, with backfill support and alerting; on-call for their reliability.
+    why: >-
+      Scope and ownership instead of a bare tool mention.

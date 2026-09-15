@@ -1,0 +1,55 @@
+category: Inference & Serving
+strong:
+  - cluster_id: llm_serving
+    role_tracks: [mle]
+    text: >-
+      Served a 70B model with vLLM and tensor parallelism on 4×H100, sustaining 1,200 tokens per second at p95 latency under 400 ms for 200 concurrent users.
+    why: >-
+      Engine, parallelism, hardware, throughput, latency and concurrency in one verifiable line.
+  - cluster_id: llm_serving
+    text: >-
+      Moved inference from a hand-rolled FastAPI wrapper to Triton Inference Server with dynamic batching, tripling GPU utilisation and retiring four instances.
+    why: >-
+      Names the before and after and the resource outcome.
+  - cluster_id: llm_serving
+    text: >-
+      Compiled a fine-tuned model with TensorRT-LLM and enabled paged attention, cutting time-to-first-token from 620 ms to 210 ms.
+    why: >-
+      Specific serving techniques tied to the metric users feel.
+  - cluster_id: quantization
+    role_tracks: [mle]
+    text: >-
+      Quantized a 13B model to 4-bit with AWQ, cutting inference cost 58% while keeping downstream task accuracy within 0.5 points of the fp16 baseline.
+    why: >-
+      Method, precision, cost result and the accuracy guard that proves it was done responsibly.
+  - cluster_id: quantization
+    text: >-
+      Applied GPTQ and structured pruning to an on-device speech model, shrinking it from 480 MB to 95 MB with no measurable change in word error rate.
+    why: >-
+      Compression techniques with a size outcome and a quality check.
+  - cluster_id: inference_optimization
+    text: >-
+      Implemented continuous batching and KV-cache reuse for a chat service, raising throughput 3.1× at the same latency budget.
+    why: >-
+      Two named optimisations and a throughput multiplier.
+  - cluster_id: inference_optimization
+    role_tracks: [mle]
+    text: >-
+      Added speculative decoding with a 1B draft model, reducing mean generation latency 44% on long-form outputs in production.
+    why: >-
+      An advanced technique with the concrete latency result.
+pairs:
+  - cluster_id: llm_serving
+    weak: >-
+      Deployed LLMs to production.
+    strong: >-
+      Deployed two fine-tuned 8B models with vLLM on Kubernetes, autoscaled on queue depth, holding p95 latency under 500 ms at 120 requests per second.
+    why: >-
+      Adds the engine, the platform, the scaling signal and the numbers.
+  - cluster_id: quantization
+    weak: >-
+      Familiar with model compression techniques.
+    strong: >-
+      Quantized a production ranking model to int8 with post-training calibration, halving CPU inference cost with a 0.2-point AUC change.
+    why: >-
+      Replaces familiarity with one done and measured instance.

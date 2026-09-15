@@ -1,0 +1,117 @@
+category: LLM / GenAI
+strong:
+  - cluster_id: rag
+    role_tracks: [mle, applied_scientist]
+    text: >-
+      Built a retrieval-augmented generation pipeline over 2M internal documents with hybrid BM25 and dense retrieval, raising answer groundedness from 62% to 91% in human evaluation.
+    why: >-
+      Method, corpus scale, retrieval design and a quality metric that matters for RAG.
+  - cluster_id: rag
+    text: >-
+      Cut RAG hallucination rate by half by adding contextual chunk prefixes and a citation-required output format, measured on a 400-question labelled set.
+    why: >-
+      A specific technique tied to a measured outcome on a stated evaluation set.
+  - cluster_id: rag
+    role_tracks: [mle]
+    text: >-
+      Reduced p95 latency of a semantic search endpoint from 900 ms to 180 ms by pre-computing embeddings nightly and moving similarity search in-process.
+    why: >-
+      Engineering outcome with numbers; shows ownership of the serving side of retrieval.
+  - cluster_id: vector_databases
+    text: >-
+      Migrated a 40M-vector index from FAISS to Qdrant with HNSW tuning, keeping recall@10 above 0.98 while cutting memory use 35%.
+    why: >-
+      Names both systems, the scale, and the trade-off managed.
+  - cluster_id: vector_databases
+    role_tracks: [mle, data_engineer]
+    text: >-
+      Stood up pgvector inside the existing Postgres cluster for a 3M-row embedding table, avoiding a separate vector database and its on-call burden.
+    why: >-
+      A pragmatic decision stated with its reason, which reads as judgement rather than tool collecting.
+  - cluster_id: rag_orchestration
+    text: >-
+      Rebuilt a LangChain prototype as a LangGraph state machine with explicit retries and tool budgets, cutting failed runs from 14% to 2% in production.
+    why: >-
+      Framework named with the reason for the rebuild and a reliability metric.
+  - cluster_id: rag_orchestration
+    text: >-
+      Used LlamaIndex to build a document-QA assistant over 30k PDFs with page-level citations, adopted by 200 analysts within a quarter.
+    why: >-
+      Tool, scale, a user-facing property (citations) and adoption.
+  - cluster_id: rlhf_alignment
+    role_tracks: [ml_research, applied_scientist]
+    text: >-
+      Ran DPO on 25k preference pairs to align a customer-facing assistant, improving human preference win rate from 48% to 67% against the SFT baseline.
+    why: >-
+      Alignment method, data size, and the standard metric compared with the right baseline.
+  - cluster_id: rlhf_alignment
+    text: >-
+      Built a preference-data collection tool and reward-model training pipeline used for RLHF on a 13B model; reward model accuracy 0.78 on held-out pairs.
+    why: >-
+      Shows the full pipeline, not just the final training run.
+  - cluster_id: prompt_engineering
+    text: >-
+      Designed a few-shot prompt library with structured output schemas that cut malformed responses from 9% to under 1% across four LLM-backed features.
+    why: >-
+      Prompting treated as engineering with a defect metric.
+  - cluster_id: prompt_engineering
+    role_tracks: [applied_scientist, data_scientist]
+    text: >-
+      Ran systematic prompt evaluations (chain-of-thought versus direct, 3 models, 1.2k cases) and chose the configuration that saved 40% of token spend at equal accuracy.
+    why: >-
+      Evaluation-driven decision with a cost outcome.
+  - cluster_id: llm_apis
+    text: >-
+      Integrated the Anthropic and OpenAI APIs behind one internal client with streaming, retries and per-team cost attribution, serving 60 internal applications.
+    why: >-
+      Integration work described with the operational features that make it production-grade.
+  - cluster_id: llm_apis
+    role_tracks: [mle]
+    text: >-
+      Built an LLM gateway with prompt caching and request batching that cut monthly model spend 32% at constant traffic.
+    why: >-
+      A cost result, which is what LLM integration work is usually judged on.
+  - cluster_id: agents
+    text: >-
+      Shipped an agentic workflow with tool use (search, SQL, ticketing) that resolves 38% of tier-1 support tickets end to end, with a human-review gate on every write action.
+    why: >-
+      Names the tools, the resolution rate and the safety control.
+  - cluster_id: agents
+    role_tracks: [applied_scientist]
+    text: >-
+      Designed a multi-agent planner-executor system for data analysis requests, evaluated on 300 analyst tasks with 84% task completion.
+    why: >-
+      Architecture, evaluation set and completion metric.
+  - cluster_id: embeddings
+    text: >-
+      Fine-tuned a sentence-embedding model on 500k in-domain pairs with contrastive loss, lifting retrieval MRR from 0.41 to 0.58 over the off-the-shelf model.
+    why: >-
+      Training method, data scale and the retrieval metric it moved.
+  - cluster_id: embeddings
+    role_tracks: [mle, data_engineer]
+    text: >-
+      Benchmarked six open embedding models on CPU latency and MTEB-style domain recall before standardising on one; documented the trade-off for the platform team.
+    why: >-
+      Model selection done as an evaluation, with the write-up mentioned.
+pairs:
+  - cluster_id: rag
+    weak: >-
+      Built a RAG chatbot using LangChain.
+    strong: >-
+      Built a retrieval-augmented assistant over 50k support articles (LangChain, pgvector) with cited answers; 78% of pilot users rated answers as correct.
+    why: >-
+      Adds corpus size, storage, a user-visible property and an evaluation number.
+  - cluster_id: llm_apis
+    weak: >-
+      Experience with OpenAI and other LLM APIs.
+    strong: >-
+      Integrated LLM APIs into two customer-facing features with streaming, fallbacks and cost logging; kept p95 latency under 2 s at 50 requests per second.
+    why: >-
+      Turns familiarity into operational evidence.
+  - cluster_id: agents
+    weak: >-
+      Worked on AI agents.
+    strong: >-
+      Built a tool-using agent that drafts responses to inbound sales emails from CRM data, reviewed by reps before sending; cut first-response time from 6 hours to 40 minutes.
+    why: >-
+      Specifies the tools, the human-in-the-loop design and the outcome.

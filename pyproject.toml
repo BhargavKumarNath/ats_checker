@@ -17,6 +17,7 @@ dependencies = [
     "python-docx>=1.2.0",
     "spacy>=3.8.16",
     "en-core-web-sm",
+    "rank-bm25>=0.2.2",
 ]
 
 [dependency-groups]
@@ -70,6 +71,10 @@ strict = true
 # `anthropic` and the Layer 2 generation/worker packages are the only places a
 # metered call can originate; core, free and web are forbidden from importing them.
 # ---------------------------------------------------------------------------
+[[tool.mypy.overrides]]
+module = "rank_bm25"
+ignore_missing_imports = true
+
 [tool.importlinter]
 root_packages = ["atsc"]
 include_external_packages = true

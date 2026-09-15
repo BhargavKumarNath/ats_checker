@@ -1,0 +1,50 @@
+category: Evaluation & Safety
+strong:
+  - cluster_id: llm_evaluation
+    role_tracks: [applied_scientist, mle]
+    text: >-
+      Built an offline evaluation suite for a RAG assistant with Ragas (faithfulness, context precision) over 600 labelled questions, run on every pull request.
+    why: >-
+      Framework, metrics, evaluation set size and integration into the development process.
+  - cluster_id: llm_evaluation
+    text: >-
+      Set up LangSmith tracing and an LLM-as-judge rubric calibrated against 300 human ratings (Cohen's kappa 0.71), replacing ad-hoc spot checks.
+    why: >-
+      Names the tooling and shows the judge was validated, which is the hard part.
+  - cluster_id: safety_guardrails
+    text: >-
+      Added input and output guardrails (prompt-injection detection, PII redaction, topic filters) to a customer assistant, blocking 99.2% of red-team attacks in the final audit.
+    why: >-
+      Specific controls plus an adversarial evaluation result.
+  - cluster_id: safety_guardrails
+    role_tracks: [applied_scientist, ml_research]
+    text: >-
+      Built a hallucination-detection classifier on 8k annotated responses (0.88 AUC) that gates low-confidence answers to human review.
+    why: >-
+      Safety work done as a measured model with a clear operational role.
+  - cluster_id: model_evaluation
+    role_tracks: [data_scientist, applied_scientist]
+    text: >-
+      Designed the evaluation protocol for a credit-risk model (stratified holdout, calibration curves, subgroup AUC) that passed model-risk review on the first submission.
+    why: >-
+      Evaluation as a discipline with a review outcome.
+  - cluster_id: model_evaluation
+    text: >-
+      Replaced accuracy with precision-recall reporting for an imbalanced fraud dataset and set the operating threshold from the business cost of false positives.
+    why: >-
+      Shows understanding of metric choice, not just metric reporting.
+pairs:
+  - cluster_id: llm_evaluation
+    weak: >-
+      Evaluated LLM outputs for quality.
+    strong: >-
+      Built a 500-case evaluation set with rubric-based LLM-as-judge scoring, validated against human labels, and used it to choose between three model versions.
+    why: >-
+      Turns a vague activity into a reusable asset and a decision.
+  - cluster_id: model_evaluation
+    weak: >-
+      Measured model accuracy.
+    strong: >-
+      Reported precision, recall and calibration on a time-split holdout, which showed the previous model's accuracy had been inflated by leakage.
+    why: >-
+      Names the metrics and the finding that made the evaluation matter.

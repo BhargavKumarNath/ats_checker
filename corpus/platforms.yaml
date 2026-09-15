@@ -1,0 +1,78 @@
+- platform: workday
+  title: >-
+    Tables and multi-column layouts fail most severely here
+  source: resume_parsing_spec.md §3
+  text: >-
+    Workday is consistently ranked the strictest parser of the major platforms. Independent parser audits find it fails on tables in the large majority of cases and misreads multi-column layouts by reading straight across the page, merging the two columns into scrambled lines. Use a single-column layout with no tables, including tables used only for visual alignment.
+- platform: workday
+  title: >-
+    Contact details in the page header are usually dropped
+  source: resume_parsing_spec.md §3
+  text: >-
+    Workday tends to strip page headers and footers before parsing. Name, email and phone placed in a header can be lost entirely, leaving the application without contact details. Put contact details in the body of the first page.
+- platform: workday
+  title: >-
+    Decorative and icon fonts are treated strictly
+  source: resume_parsing_spec.md §3
+  text: >-
+    Workday is flagged as particularly strict on non-standard fonts. Icon fonts, skill-bar graphics and decorative faces often carry no extractable text, so the content simply disappears. Use a standard text font and write skills as words.
+- platform: workday
+  title: >-
+    Dates drive tenure calculation
+  source: resume_parsing_spec.md §3
+  text: >-
+    Workday computes tenure from the dates it parses. Mixing "2024", "March 2024" and "3/24" in one resume can miscount or drop a role. Use one date format everywhere, month and year is safest.
+- platform: greenhouse
+  title: >-
+    Tolerant of simple tables, not of real columns
+  source: resume_parsing_spec.md §3
+  text: >-
+    Greenhouse is more forgiving of simple tables than Workday, but genuine multi-column layouts still come out with the column order misread in many cases. A skills table with two columns may survive; a two-column page layout generally does not.
+- platform: greenhouse
+  title: >-
+    Text boxes are skipped, not misordered
+  source: resume_parsing_spec.md §3
+  text: >-
+    Like nearly every major platform, Greenhouse often skips content placed in floating text boxes entirely rather than reading it out of order. Sidebars built as text boxes are the usual casualty. Keep everything in the main text flow.
+- platform: greenhouse
+  title: >-
+    Section detection depends on standard labels
+  source: resume_parsing_spec.md §3
+  text: >-
+    Greenhouse finds sections by matching expected labels. Creative headings such as "My journey" or "Toolbox" may not be recognised as Experience or Skills, and their content can be filed under the wrong section. Use Experience, Education, Skills and Projects.
+- platform: lever
+  title: >-
+    Similar tolerance profile to Greenhouse
+  source: resume_parsing_spec.md §3
+  text: >-
+    Lever is comparatively forgiving of simple tables but still penalises genuine multi-column layouts, reading across columns and merging lines. Single-column layouts parse cleanly.
+- platform: lever
+  title: >-
+    Text boxes and floating elements are skipped
+  source: resume_parsing_spec.md §3
+  text: >-
+    Content inside text boxes and floating elements is frequently skipped by Lever's parser, consistent with the behaviour seen across major platforms. Keep skills and summaries in the main body.
+- platform: lever
+  title: >-
+    Image-only PDFs have nothing to parse
+  source: resume_parsing_spec.md §3
+  text: >-
+    A scanned or image-only PDF has no text layer, so Lever, like every platform, extracts nothing. Export the resume from the editor as a text PDF rather than printing to image or scanning.
+- platform: ashby
+  title: >-
+    Behaviour close to Greenhouse and Lever
+  source: resume_parsing_spec.md §3
+  text: >-
+    Ashby is a newer platform whose parsing behaves like Greenhouse and Lever on the documented failure modes: simple tables usually survive, real multi-column layouts and text boxes do not. Treat the same formatting rules as applying.
+- platform: ashby
+  title: >-
+    Consistent date formats keep tenure intact
+  source: resume_parsing_spec.md §3
+  text: >-
+    Ashby, like the other platforms, parses dates to calculate experience duration. Inconsistent formats across roles can miscount tenure. Use one format, month and year, for every role.
+- platform: ashby
+  title: >-
+    Unusual section headers may not be recognised
+  source: resume_parsing_spec.md §3
+  text: >-
+    Section-detection logic matches expected labels. A section called "Where I've worked" may not be treated as Experience, which affects any section-based filtering. Use standard section names.

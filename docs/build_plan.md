@@ -215,3 +215,25 @@ Append one entry per completed phase: what was built, what's left, anything deci
 - SEO pages are data-driven (severity table, category weights), not marketing copy, so they stay true when the tables change.
 
 **Left:** no rate limiting yet (add at the Fly proxy or a small in-process limiter before public launch). No per-check "location" for PDF tables beyond page number. Next: Phase 8 Layer 2 corpus and retrieval.
+
+### Phase 8 — Layer 2 corpus and retrieval (complete, 2026-09-15)
+
+**Built:** `corpus/` (curated, versioned, no model-generated text): six `bullets/<category>.yaml` files with 67 strong bullet examples (at least two per cluster, each naming a method, a scale and an outcome, with a one-line "why it works") and 16 weak→stronger rewrite pairs; `platforms.yaml` with 13 platform behaviours, every one cited to `resume_parsing_spec.md` §3; `guidance.yaml` with 10 writing-guidance entries including keyword density versus readability. `atsc.deep.corpus.load_corpus()` validates every file with Pydantic, refuses unknown cluster ids, derives one equivalence chunk per taxonomy cluster at load time ("Fine-tuning / PEFT is also written as: LoRA, QLoRA, …") so the corpus never drifts from the matcher, and gives every chunk a contextual prefix (technical_architecture.md §5). 138 chunks total. `atsc.deep.retrieval.CorpusIndex`: in-process dense matrix (self-hosted embedder, bge query instruction on the query side) plus BM25 (`rank-bm25`), fused by reciprocal rank fusion (k = 60, 50 candidates per side); filters by kind, cluster and platform; `dense` / `sparse` / `hybrid` modes; `evaluate()` computes recall@k and MRR over a labelled set. `tests/fixtures/retrieval_eval.json`: 28 labelled queries across all five chunk kinds. `scripts/bench/retrieval_bench.py` compares models and modes. Settings: `deep_embedding_model` (default `BAAI/bge-base-en-v1.5`). 15 tests.
+
+**Numbers (28 queries, recall@5 / MRR):**
+
+| model | dense | sparse | hybrid | query |
+|---|---|---|---|---|
+| bge-small-en-v1.5 | 0.89 / 0.76 | 0.96 / 0.66 | 0.96 / 0.73 | 4 ms |
+| bge-base-en-v1.5 | 0.96 / 0.79 | 0.96 / 0.66 | 0.96 / 0.75 | 11 ms |
+
+The single hybrid miss was a corpus gap (a Spark bullet that only said "PySpark"), fixed in the corpus rather than the retriever. Thresholds in the test: recall@5 ≥ 0.85, MRR ≥ 0.6.
+
+**Decided (not in original docs):**
+- **No reranker at launch.** Hybrid recall@5 is 0.96 on a 138-chunk corpus; a reranker would add a model for no measurable gain. Re-run the bench when the corpus passes ~1k chunks.
+- **Layer 2 embedding model is `BAAI/bge-base-en-v1.5`, not Qwen3-Embedding-0.6B / bge-m3.** Neither runs in the ONNX runtime (fastembed 0.8) the project standardised on; adding PyTorch to the worker just for embeddings is operational weight the numbers do not justify. bge-base beats bge-small on dense recall (0.96 vs 0.89) and MRR, which is what matters as the corpus grows; the cost is 210 MB and 7 ms per query, both irrelevant on the paid path. Supersedes §3's model row.
+- Zero-signal documents get no rank on either side (BM25 score 0, cosine ≤ 0), so RRF cannot promote a document that neither retriever found.
+- Corpus rule (README): a rewrite pair's stronger version must be plausibly true of the weak one. The report must never coach a claim the candidate cannot back.
+- The Layer 2 model is not baked into the Layer 1 web image; the worker image (Phase 10) gets it.
+
+**Left:** corpus breadth. 67 bullets across 32 clusters is a seed; the growth loop (Phase 11) should add bullets where retrieval returns only the equivalence chunk. Next: Phase 9 generation.
