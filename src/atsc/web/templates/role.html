@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ label }} resume check{% endblock %}
+{% block description %}Score a resume against a {{ label }} job description with the skill taxonomy weighted for that track.{% endblock %}
+{% block content %}
+<section class="hero grid">
+  <div class="col-8">
+    <h1>{{ label }} postings, weighted as {{ label }} postings.</h1>
+    <p class="standfirst">The same skill does not carry the same weight in every track. Choosing {{ label }} re-weights the skill overlap component by category, so a gap in a category this track values costs more than a gap in one it does not.</p>
+  </div>
+  <div class="col-4">
+    <table class="weights">
+      <caption>Category weights for {{ label }}</caption>
+      <tbody>
+      {% for category, word in weights %}
+        <tr><th scope="row">{{ category }}</th><td>{{ word }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <p class="muted small">Other tracks: {% for t, name in other_tracks %}<a href="/roles/{{ t }}">{{ name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+  </div>
+</section>
+{% include "partials/form.html" %}
+<div id="result"></div>
+{% endblock %}

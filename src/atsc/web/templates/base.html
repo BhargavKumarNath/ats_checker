@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}ATS Checker for ML, data science and AI roles{% endblock %}</title>
+<meta name="description" content="{% block description %}Score a resume against one ML job description: alignment out of 100, every matched and missing skill by name, and the formatting problems an applicant tracking system trips on. Free, no account.{% endblock %}">
+<meta name="htmx-config" content='{"responseHandling":[{"code":".*","swap":true}]}'>
+<link rel="preload" href="/static/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/site.css">
+<script src="/static/htmx.min.js" defer></script>
+</head>
+<body>
+<header class="masthead">
+  <a class="wordmark" href="/">ATS Checker<span> for ML, data science and AI roles</span></a>
+  <nav class="site-nav" aria-label="Site">
+    <a href="/how-it-works">How the score works</a>
+    <a href="/roles/mle">Roles</a>
+    <a href="/ats/workday">Platforms</a>
+  </nav>
+</header>
+<main class="page">
+{% block content %}{% endblock %}
+</main>
+<footer class="colophon">
+  <div class="grid">
+    <div class="col-4">
+      <p>Runs entirely on this server. No account, nothing stored, no model API calls on the free check.</p>
+    </div>
+    <div class="col-4">
+      <p class="list-title">By role</p>
+      {% for track, name in ROLE_LABELS.items() %}<a href="/roles/{{ track.value }}">{{ name }}</a>{% if not loop.last %}<br>{% endif %}{% endfor %}
+    </div>
+    <div class="col-4">
+      <p class="list-title">By platform</p>
+      {% for p, name in PLATFORM_LABELS.items() %}<a href="/ats/{{ p.value }}">{{ name }}</a>{% if not loop.last %}<br>{% endif %}{% endfor %}
+    </div>
+  </div>
+</footer>
+</body>
+</html>

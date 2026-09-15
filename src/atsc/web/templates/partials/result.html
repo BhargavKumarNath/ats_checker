@@ -1,0 +1,119 @@
+{% set c = result.components %}
+<article class="sheet">
+  <div class="grid sheet-head">
+    <div class="col-5">
+      <p class="score-number">{{ result.overall_score }}</p>
+      <p class="score-caption">alignment with this job description, out of 100</p>
+    </div>
+    <div class="col-7">
+      <table class="components">
+        <tbody>
+          <tr><th scope="row">Semantic match</th><td class="num">{{ c.semantic_match_score }}</td><td class="muted">45% of the score</td></tr>
+          <tr><th scope="row">Skill overlap</th><td class="num">{{ c.taxonomy_overlap_score }}</td><td class="muted">35%</td></tr>
+          <tr><th scope="row">Parseability on {{ platform_label }}</th><td class="num">{{ c.parseability_score }}</td><td class="muted">20%</td></tr>
+        </tbody>
+      </table>
+      <dl class="meta">
+        <dt>Role weighting</dt>
+        <dd>{% if role_label %}{{ role_label }}, from the {{ role_source }}{% else %}none: the posting did not read clearly as one track and no track was chosen{% endif %}</dd>
+        <dt>Requirements found in the posting</dt>
+        <dd>{{ requirement_count }}</dd>
+      </dl>
+    </div>
+  </div>
+  <p class="disclaimer">{{ DISCLAIMER }}</p>
+
+  <section class="block">
+    <h2>Skills the posting names that your resume has <span class="count">{{ result.matched_skills | length }}</span></h2>
+    {% if result.matched_skills %}
+    <table class="evidence">
+      <thead><tr><th>Skill</th><th>In your resume</th><th>In the posting</th></tr></thead>
+      <tbody>
+      {% for m in result.matched_skills %}
+        <tr><th scope="row">{{ m.canonical_name }}</th><td><q>{{ m.resume_evidence | clip }}</q></td><td><q>{{ m.jd_evidence | clip }}</q></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="empty">None. Either the posting names no skill in the ML/DS taxonomy, or your resume phrases them in a way the taxonomy does not yet know. The requirement-by-requirement table below shows what came closest.</p>
+    {% endif %}
+  </section>
+
+  <section class="block">
+    <h2{% if result.unmatched_required_skills %} class="missing"{% endif %}>Required skills your resume does not name <span class="count">{{ result.unmatched_required_skills | length }}</span></h2>
+    {% if result.unmatched_required_skills %}
+    <table class="evidence">
+      <thead><tr><th>Skill</th><th>In the posting</th></tr></thead>
+      <tbody>
+      {% for u in result.unmatched_required_skills %}
+        <tr><th scope="row" class="missing">{{ u.canonical_name }}</th><td><q>{{ u.jd_evidence | clip }}</q></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="empty">None. Every required skill the posting names appears in your resume.</p>
+    {% endif %}
+  </section>
+
+  {% if result.unmatched_preferred_skills %}
+  <section class="block">
+    <h2>Preferred skills your resume does not name <span class="count">{{ result.unmatched_preferred_skills | length }}</span></h2>
+    <table class="evidence">
+      <thead><tr><th>Skill</th><th>In the posting</th></tr></thead>
+      <tbody>
+      {% for u in result.unmatched_preferred_skills %}
+        <tr><th scope="row">{{ u.canonical_name }}</th><td><q>{{ u.jd_evidence | clip }}</q></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
+
+  <section class="block">
+    <h2>Each requirement and the closest line in your resume</h2>
+    <p class="lede">Closeness is the semantic similarity of the two lines, rescaled to 0 to 100. Preferred requirements count at half weight.</p>
+    <table class="evidence requirements">
+      <thead><tr><th>Requirement</th><th>Closest resume line</th><th class="num">Closeness</th></tr></thead>
+      <tbody>
+      {% for r in result.requirement_matches %}
+        <tr>
+          <td><q>{{ r.jd_text | clip }}</q>{% if r.requirement_type == "preferred" %}<span class="tag">preferred</span>{% endif %}</td>
+          <td>{% if r.resume_line %}<q>{{ r.resume_line | clip }}</q>{% else %}<span class="muted">no resume lines to compare</span>{% endif %}</td>
+          <td class="num">{{ r.score }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="block">
+    <h2>Parseability on {{ platform_label }}</h2>
+    {% if unassessed %}
+    <p class="lede">{{ unassessed }} of {{ checks | length }} checks are not assessed on pasted text. Upload the PDF or .docx you actually submit to run them.</p>
+    {% endif %}
+    <table class="checks">
+      <thead><tr><th>Check</th><th>Result</th><th>Severity here</th><th>What goes wrong</th></tr></thead>
+      <tbody>
+      {% for ch in checks %}
+        <tr class="{{ ch.status }}">
+          <th scope="row">{{ ch.label }}{% if ch.location %}<span class="where">{{ ch.location }}</span>{% endif %}</th>
+          <td class="status">{{ ch.status_label }}</td>
+          <td>{{ ch.severity_label }}</td>
+          <td class="muted">{{ ch.explanation }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="block cta-row">
+    <div class="grid">
+      <div class="col-7">
+        <p>The detailed report goes line by line: a rewrite for each weak or missing item, each one grounded in a quoted source passage, plus a keyword-stuffing check.</p>
+      </div>
+      <div class="col-5 cta-cell">
+        <a class="cta" href="/report">Get the detailed report</a>
+      </div>
+    </div>
+  </section>
+</article>

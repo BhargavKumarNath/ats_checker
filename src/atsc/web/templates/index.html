@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero grid">
+  <div class="col-8">
+    <h1>Your resume against one ML job description, scored line by line.</h1>
+    <p class="standfirst">Paste both. In under three seconds you get an alignment score out of 100, every matched and missing skill by name, and the formatting problems an applicant tracking system would trip on. Free, no account.</p>
+  </div>
+</section>
+{% include "partials/form.html" %}
+<div id="result">
+  {% if result %}{% include "partials/result.html" %}{% elif message %}{% include "partials/error.html" %}{% endif %}
+</div>
+{% endblock %}

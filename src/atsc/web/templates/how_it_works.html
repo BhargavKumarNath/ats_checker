@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}How the score works{% endblock %}
+{% block description %}The exact formula behind the alignment score: three components, their weights, and what each one can and cannot tell you.{% endblock %}
+{% block content %}
+<section class="hero grid">
+  <div class="col-8">
+    <h1>Three components, one weighted sum, nothing hidden.</h1>
+    <p class="standfirst">{{ DISCLAIMER }}</p>
+  </div>
+</section>
+<section class="block prose grid">
+  <div class="col-8">
+    <table class="components">
+      <tbody>
+        <tr><th scope="row">Semantic match</th><td class="num">{{ w_semantic }}%</td></tr>
+        <tr><th scope="row">Skill overlap</th><td class="num">{{ w_taxonomy }}%</td></tr>
+        <tr><th scope="row">Parseability</th><td class="num">{{ w_parse }}%</td></tr>
+      </tbody>
+    </table>
+    <p>These weights are a starting hypothesis, not a validated model. They will be re-fitted against labelled evaluation data once enough exists, and this page will change when they do.</p>
+
+    <h2>Semantic match</h2>
+    <p>Every requirement line in the posting is compared with every line of your resume using a small language model that runs on this server. The closest resume line counts for that requirement. A similarity of {{ floor }} maps to 0 and {{ ceiling }} maps to 100; the requirement scores are averaged, with preferred requirements at {{ preferred_weight }} of the weight of required ones. No text is sent to any outside service.</p>
+
+    <h2>Skill overlap</h2>
+    <p>A curated taxonomy of ML, data science and AI skills groups phrasings that mean the same thing, so "LoRA" and "parameter-efficient fine-tuning" count as one skill. The score is the share of skills the posting names that your resume also names, with each skill weighted by how much the chosen role track values its category, and preferred skills at half weight.</p>
+
+    <h2>Parseability</h2>
+    <p>Eight structural checks: {{ checks | join(", ") | lower }}. Each failed check costs {% for name, pts in penalties %}{{ pts }} points at {{ name }} severity{% if not loop.last %}, {% endif %}{% endfor %} on the platform you chose. On pasted text only the two text-level checks run; upload the file you actually submit to run the rest.</p>
+
+    <h2>What it does not measure</h2>
+    <p>Anything about you beyond the words on the page. Not culture fit, not seniority fit, not the quality of your work, and not what a recruiter will do next. Two resumes with the same score can have very different outcomes; the score tells you where the words align and where they do not.</p>
+  </div>
+</section>
+{% endblock %}

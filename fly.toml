@@ -1,0 +1,36 @@
+# Fly.io config for the Layer 1 web process (build_plan.md §3: one always-on machine,
+# no scale-to-zero because a cold start blows the 3 s budget). Layer 2's worker is a
+# separate process group added in Phase 10 and is the only one that gets ANTHROPIC_API_KEY.
+app = "atsc"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  ATSC_TAXONOMY_DIR = "/app/taxonomy"
+  ATSC_MODEL_CACHE_DIR = "/app/models"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["web"]
+
+  [[http_service.checks]]
+    interval = "15s"
+    timeout = "5s"
+    grace_period = "30s"
+    method = "GET"
+    path = "/healthz"
+
+[processes]
+  web = "uvicorn atsc.web.app:app --host 0.0.0.0 --port 8080"
+
+[[vm]]
+  size = "shared-cpu-2x"   # Phase 3 thread scaling: 2 vCPU keeps a two-page resume under 1 s
+  memory = "2gb"
+  processes = ["web"]

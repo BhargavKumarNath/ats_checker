@@ -1,0 +1,44 @@
+<form class="checker" method="post" action="/score" enctype="multipart/form-data"
+      hx-post="/score" hx-target="#result" hx-swap="innerHTML show:#result:top"
+      hx-encoding="multipart/form-data" hx-indicator="#indicator">
+  <div class="grid">
+    <div class="col-6 field">
+      <label for="resume_text">Resume</label>
+      <textarea id="resume_text" name="resume_text" rows="16" spellcheck="false"
+                placeholder="Paste the full text of your resume">{{ resume_text }}</textarea>
+      <label class="file" for="resume_file">
+        <span>Or upload a PDF or .docx, up to 2 MB. A file gives a fuller formatting check.</span>
+        <input id="resume_file" name="resume_file" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+      </label>
+    </div>
+    <div class="col-6 field">
+      <label for="jd_text">Job description</label>
+      <textarea id="jd_text" name="jd_text" rows="16" spellcheck="false"
+                placeholder="Paste the whole posting, requirements included">{{ jd_text }}</textarea>
+    </div>
+  </div>
+  <div class="grid controls">
+    <div class="col-3 field">
+      <label for="platform">Applicant tracking system</label>
+      <select id="platform" name="platform">
+        <option value="generic"{% if selected_platform == "generic" %} selected{% endif %}>{{ GENERIC_LABEL }}</option>
+        {% for p, name in PLATFORM_LABELS.items() %}
+        <option value="{{ p.value }}"{% if selected_platform == p.value %} selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-3 field">
+      <label for="role_track">Role track</label>
+      <select id="role_track" name="role_track">
+        <option value="auto"{% if selected_role == "auto" %} selected{% endif %}>Detect from the posting</option>
+        {% for t, name in ROLE_LABELS.items() %}
+        <option value="{{ t.value }}"{% if selected_role == t.value %} selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-3 field submit">
+      <button type="submit">Score alignment</button>
+      <span id="indicator" class="indicator" aria-live="polite">Scoring</span>
+    </div>
+  </div>
+</form>
