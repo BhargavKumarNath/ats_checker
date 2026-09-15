@@ -1,0 +1,15 @@
+# Category-level default weights, gap_analysis_spec.md §3.
+# High = 1.0, Medium = 0.6, Low = 0.3 (docs/build_plan.md interpretation 3).
+# A starting hypothesis, to be validated against labelled postings per track.
+- category: Core ML Foundations
+  weights: {mle: 1.0, applied_scientist: 1.0, data_scientist: 0.6, ml_research: 1.0, data_engineer: 0.3}
+- category: LLM / GenAI
+  weights: {mle: 1.0, applied_scientist: 1.0, data_scientist: 0.6, ml_research: 1.0, data_engineer: 0.3}
+- category: Inference & Serving
+  weights: {mle: 1.0, applied_scientist: 0.6, data_scientist: 0.3, ml_research: 0.3, data_engineer: 0.6}
+- category: MLOps & Lifecycle
+  weights: {mle: 1.0, applied_scientist: 0.6, data_scientist: 0.3, ml_research: 0.3, data_engineer: 1.0}
+- category: Evaluation & Safety
+  weights: {mle: 0.6, applied_scientist: 1.0, data_scientist: 0.3, ml_research: 1.0, data_engineer: 0.3}
+- category: Classical Data Science
+  weights: {mle: 0.3, applied_scientist: 0.6, data_scientist: 1.0, ml_research: 0.6, data_engineer: 0.6}

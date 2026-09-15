@@ -131,3 +131,11 @@ Append one entry per completed phase: what was built, what's left, anything deci
 **Decided (not in original docs):** `httpx2` replaces `httpx` for the Starlette test client (Starlette deprecated the old one). Docker installs the project non-editable. Package name is `atsc`.
 
 **Left for later phases:** everything functional. No taxonomy, parsing, embedding or UI yet.
+
+### Phase 2 — Taxonomy dataset and matcher (complete, 2026-09-15)
+
+**Built:** `taxonomy/` dataset: `categories.yaml` (per-category default weights) + six category files, 32 clusters, 431 surface forms. Seed clusters from `gap_analysis_spec.md` §2 plus additions that real ML/DS postings need (transformer architectures, CV, NLP, LLM APIs, agents, embeddings, feature stores, model evaluation, Python stack, SQL, viz/BI). `atsc.core.models` (`Category`, `RoleTrack`, `SkillCluster`), `atsc.core.taxonomy.load_taxonomy()` (Pydantic-validated, duplicate-id and missing-weight errors, category defaults with per-cluster override), `atsc.core.embedding.Embedder` Protocol, `atsc.core.matcher.ClusterMatcher` (exact regex matching: case-insensitive, hyphen/space/"&" tolerant, word-boundary anchored; embedding fallback via `match_phrases` behind the Protocol). Golden tests: all four required equivalence classes resolve to one cluster from both phrasings. Matcher timing: ~33 ms on a 7k-char text.
+
+**Decided (not in original docs):** taxonomy path resolves from `$ATSC_TAXONOMY_DIR`, else `<repo>/taxonomy`; Docker sets the env var and installs the project editable. A surface form may map to several clusters (Airflow, Databricks) and the matcher returns all of them. Canonical names are included as surface forms where they are natural phrasings ("deep learning framework"). Python and SQL clusters override the Classical DS category weights (Python = 1.0 on every track). Cluster ids are stable identifiers: never rename once shipped.
+
+**Left:** the embedding fallback is only tested against a fake embedder; Phase 3 adds the real model and a golden test for an unlisted phrasing. The similarity threshold (default 0.80) is a placeholder until Phase 3 measures real cosine distributions.

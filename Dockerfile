@@ -14,7 +14,7 @@ FROM deps AS app
 COPY src ./src
 COPY taxonomy ./taxonomy
 COPY corpus ./corpus
-RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --no-dev --no-editable
-ENV PATH="/app/.venv/bin:$PATH" PORT=8080
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --no-dev
+ENV PATH="/app/.venv/bin:$PATH" PORT=8080 ATSC_TAXONOMY_DIR=/app/taxonomy
 EXPOSE 8080
 CMD ["sh", "-c", "uvicorn atsc.web.app:app --host 0.0.0.0 --port ${PORT}"]

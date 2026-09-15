@@ -1,0 +1,107 @@
+category: Classical Data Science
+clusters:
+  - cluster_id: statistical_modeling
+    canonical_name: Statistical modeling
+    surface_forms:
+      - statistical modeling
+      - statistical modelling
+      - statistics
+      - statistical analysis
+      - hypothesis testing
+      - A/B testing
+      - A/B tests
+      - AB testing
+      - experimentation
+      - causal inference
+      - causal analysis
+      - Bayesian
+      - Bayesian statistics
+      - regression analysis
+      - time series
+      - time series forecasting
+      - forecasting
+  - cluster_id: classical_ml
+    canonical_name: Classical ML
+    surface_forms:
+      - scikit-learn
+      - scikit learn
+      - sklearn
+      - gradient boosting
+      - gradient boosted trees
+      - XGBoost
+      - LightGBM
+      - CatBoost
+      - random forest
+      - random forests
+      - logistic regression
+      - linear regression
+      - clustering
+      - k-means
+      - SVM
+      - support vector machine
+      - recommendation systems
+      - recommender systems
+      - recommenders
+  - cluster_id: data_eng_tooling
+    canonical_name: Data engineering tooling
+    surface_forms:
+      - Spark
+      - PySpark
+      - Apache Spark
+      - Polars
+      - DuckDB
+      - dbt
+      - Airflow
+      - Kafka
+      - Flink
+      - ETL
+      - ELT
+      - data pipelines
+      - data pipeline
+      - data warehouse
+      - Snowflake
+      - BigQuery
+      - Redshift
+      - Databricks
+      - Delta Lake
+      - Iceberg
+      - Parquet
+  - cluster_id: python_data_stack
+    canonical_name: Python data stack
+    # Override: Python is table stakes on every track, not "Low" as the category default implies.
+    role_track_weight: {mle: 1.0, applied_scientist: 1.0, data_scientist: 1.0, ml_research: 1.0, data_engineer: 1.0}
+    surface_forms:
+      - Python
+      - pandas
+      - NumPy
+      - SciPy
+      - Jupyter
+      - matplotlib
+      - seaborn
+      - Plotly
+  - cluster_id: sql
+    canonical_name: SQL and databases
+    role_track_weight: {mle: 0.6, applied_scientist: 0.6, data_scientist: 1.0, ml_research: 0.3, data_engineer: 1.0}
+    surface_forms:
+      - SQL
+      - PostgreSQL
+      - Postgres
+      - MySQL
+      - relational databases
+      - query optimization
+      - data modeling
+      - NoSQL
+      - MongoDB
+      - Redis
+  - cluster_id: visualization_bi
+    canonical_name: Visualization and BI
+    surface_forms:
+      - data visualization
+      - data visualisation
+      - dashboards
+      - dashboarding
+      - Tableau
+      - Power BI
+      - Looker
+      - Streamlit
+      - reporting

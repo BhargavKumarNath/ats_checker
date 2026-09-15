@@ -1,0 +1,91 @@
+category: Core ML Foundations
+clusters:
+  - cluster_id: dl_frameworks
+    canonical_name: Deep learning frameworks
+    surface_forms:
+      - PyTorch
+      - torch
+      - TensorFlow
+      - TF2
+      - JAX
+      - Flax
+      - Keras
+      - deep learning framework
+      - deep learning frameworks
+      - PyTorch Lightning
+      - Lightning
+  - cluster_id: peft
+    canonical_name: Fine-tuning / PEFT
+    surface_forms:
+      - LoRA
+      - QLoRA
+      - PEFT
+      - parameter-efficient fine-tuning
+      - parameter efficient fine tuning
+      - adapters
+      - adapter tuning
+      - fine-tuning
+      - fine-tuned
+      - finetuning
+      - finetuned
+      - instruction tuning
+      - SFT
+      - supervised fine-tuning
+  - cluster_id: distributed_training
+    canonical_name: Distributed training
+    surface_forms:
+      - distributed training
+      - data parallelism
+      - data parallel
+      - model parallelism
+      - model parallel
+      - tensor parallelism
+      - pipeline parallelism
+      - multi-GPU training
+      - multi-GPU
+      - multi-node training
+      - DDP
+      - FSDP
+      - DeepSpeed
+      - Megatron
+      - Horovod
+  - cluster_id: transformers_architecture
+    canonical_name: Transformer architectures
+    surface_forms:
+      - transformer
+      - transformers
+      - attention mechanism
+      - self-attention
+      - encoder-decoder
+      - BERT
+      - GPT
+      - Llama
+      - Mistral
+      - Hugging Face
+      - HuggingFace
+  - cluster_id: computer_vision
+    canonical_name: Computer vision
+    surface_forms:
+      - computer vision
+      - CNN
+      - convolutional neural network
+      - convolutional neural networks
+      - object detection
+      - image segmentation
+      - image classification
+      - OpenCV
+      - YOLO
+      - vision transformer
+      - ViT
+  - cluster_id: nlp
+    canonical_name: Natural language processing
+    surface_forms:
+      - NLP
+      - natural language processing
+      - text classification
+      - named entity recognition
+      - NER
+      - spaCy
+      - tokenization
+      - sequence labeling
+      - sentiment analysis

@@ -1,0 +1,61 @@
+category: Evaluation & Safety
+clusters:
+  - cluster_id: llm_evaluation
+    canonical_name: LLM evaluation frameworks
+    surface_forms:
+      - Ragas
+      - DeepEval
+      - LangSmith
+      - LangFuse
+      - offline evaluation
+      - online evaluation
+      - LLM evaluation
+      - LLM evals
+      - evals
+      - evaluation harness
+      - evaluation framework
+      - LLM-as-a-judge
+      - LLM as a judge
+      - benchmark evaluation
+      - human evaluation
+  - cluster_id: safety_guardrails
+    canonical_name: Safety / guardrails
+    surface_forms:
+      - guardrails
+      - Guardrails AI
+      - NeMo Guardrails
+      - hallucination measurement
+      - hallucination detection
+      - hallucination
+      - hallucinations
+      - red-teaming
+      - red teaming
+      - prompt-injection defense
+      - prompt injection
+      - jailbreak
+      - jailbreaks
+      - AI safety
+      - responsible AI
+      - content moderation
+      - toxicity detection
+  - cluster_id: model_evaluation
+    canonical_name: Model evaluation and metrics
+    surface_forms:
+      - model evaluation
+      - evaluation metrics
+      - precision and recall
+      - precision/recall
+      - F1 score
+      - F1
+      - ROC-AUC
+      - AUC
+      - cross-validation
+      - cross validation
+      - error analysis
+      - ablation
+      - ablation studies
+      - fairness
+      - bias evaluation
+      - interpretability
+      - explainability
+      - SHAP

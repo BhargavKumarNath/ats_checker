@@ -1,0 +1,65 @@
+category: Inference & Serving
+clusters:
+  - cluster_id: llm_serving
+    canonical_name: LLM serving engines
+    surface_forms:
+      - vLLM
+      - TensorRT-LLM
+      - TensorRT
+      - Triton Inference Server
+      - Triton
+      - Ollama
+      - TGI
+      - Text Generation Inference
+      - SGLang
+      - llama.cpp
+      - model serving
+      - LLM serving
+      - inference server
+      - TorchServe
+      - BentoML
+      - KServe
+  - cluster_id: quantization
+    canonical_name: Quantization / compression
+    surface_forms:
+      - quantization
+      - quantisation
+      - quantized
+      - GPTQ
+      - AWQ
+      - int8
+      - int4
+      - 4-bit
+      - 8-bit
+      - bitsandbytes
+      - model compression
+      - compression techniques
+      - distillation
+      - knowledge distillation
+      - pruning
+      - model pruning
+  - cluster_id: inference_optimization
+    canonical_name: Inference optimization
+    surface_forms:
+      - KV-cache optimization
+      - KV cache
+      - KV-cache
+      - batching
+      - continuous batching
+      - dynamic batching
+      - latency optimization
+      - latency optimisation
+      - throughput optimization
+      - throughput optimisation
+      - inference optimization
+      - inference latency
+      - low-latency inference
+      - speculative decoding
+      - ONNX
+      - ONNX Runtime
+      - torch.compile
+      - CUDA
+      - CUDA kernels
+      - GPU optimization
+      - flash attention
+      - FlashAttention

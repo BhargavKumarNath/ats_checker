@@ -1,0 +1,123 @@
+category: LLM / GenAI
+clusters:
+  - cluster_id: rag
+    canonical_name: Retrieval-augmented generation
+    surface_forms:
+      - RAG
+      - retrieval-augmented generation
+      - retrieval augmented generation
+      - vector search
+      - semantic search
+      - retrieval over a knowledge base
+      - vector search over a knowledge base
+      - knowledge retrieval
+      - dense retrieval
+      - embedding search
+      - similarity search
+  - cluster_id: vector_databases
+    canonical_name: Vector databases
+    surface_forms:
+      - Pinecone
+      - Weaviate
+      - Qdrant
+      - pgvector
+      - FAISS
+      - Milvus
+      - Chroma
+      - ChromaDB
+      - LanceDB
+      - vector database
+      - vector databases
+      - vector store
+      - vector stores
+      - vector DB
+  - cluster_id: rag_orchestration
+    canonical_name: RAG orchestration
+    surface_forms:
+      - LangChain
+      - LlamaIndex
+      - LangGraph
+      - Haystack
+      - DSPy
+      - retrieval pipeline
+      - retrieval pipelines
+      - chunking strategy
+      - chunking
+      - reranking
+      - reranker
+      - hybrid retrieval
+      - hybrid search
+      - BM25
+      - agentic RAG
+  - cluster_id: rlhf_alignment
+    canonical_name: RLHF / alignment fine-tuning
+    surface_forms:
+      - RLHF
+      - DPO
+      - reinforcement learning from human feedback
+      - direct preference optimization
+      - direct preference optimisation
+      - alignment fine-tuning
+      - alignment tuning
+      - preference tuning
+      - preference optimization
+      - reward model
+      - reward modeling
+      - PPO
+      - GRPO
+      - constitutional AI
+  - cluster_id: prompt_engineering
+    canonical_name: Prompt engineering
+    surface_forms:
+      - prompt engineering
+      - prompt design
+      - prompting
+      - few-shot prompting
+      - few-shot
+      - zero-shot
+      - chain-of-thought
+      - chain of thought
+      - CoT
+      - system prompt
+      - prompt optimization
+  - cluster_id: llm_apis
+    canonical_name: LLM APIs and integration
+    surface_forms:
+      - LLM
+      - LLMs
+      - large language model
+      - large language models
+      - OpenAI API
+      - Anthropic API
+      - Claude API
+      - GPT-4
+      - GPT-4o
+      - Gemini
+      - function calling
+      - tool use
+      - tool calling
+      - structured outputs
+  - cluster_id: agents
+    canonical_name: LLM agents
+    surface_forms:
+      - LLM agents
+      - AI agents
+      - agentic
+      - agentic workflows
+      - agent orchestration
+      - multi-agent
+      - multi-agent systems
+      - MCP
+      - Model Context Protocol
+  - cluster_id: embeddings
+    canonical_name: Embedding models
+    surface_forms:
+      - embeddings
+      - embedding model
+      - embedding models
+      - text embeddings
+      - sentence embeddings
+      - sentence-transformers
+      - sentence transformers
+      - BGE
+      - contrastive learning

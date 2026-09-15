@@ -1,0 +1,95 @@
+category: MLOps & Lifecycle
+clusters:
+  - cluster_id: experiment_tracking
+    canonical_name: Experiment tracking
+    surface_forms:
+      - MLflow
+      - Weights & Biases
+      - Weights and Biases
+      - W&B
+      - wandb
+      - experiment tracking
+      - Neptune
+      - Comet
+      - TensorBoard
+  - cluster_id: orchestration
+    canonical_name: Orchestration
+    surface_forms:
+      - Kubeflow
+      - Airflow
+      - Apache Airflow
+      - Prefect
+      - Dagster
+      - Ray
+      - Metaflow
+      - Flyte
+      - pipeline orchestration
+      - workflow orchestration
+      - ML pipelines
+      - training pipelines
+      - Argo Workflows
+  - cluster_id: cloud_ml_platforms
+    canonical_name: Cloud ML platforms
+    surface_forms:
+      - SageMaker
+      - AWS SageMaker
+      - Amazon SageMaker
+      - Vertex AI
+      - GCP Vertex AI
+      - Google Vertex AI
+      - Azure ML
+      - Azure Machine Learning
+      - Databricks
+      - AWS
+      - GCP
+      - Google Cloud
+      - Azure
+      - Bedrock
+  - cluster_id: containers_deploy
+    canonical_name: Containerization / deployment infra
+    surface_forms:
+      - Docker
+      - Kubernetes
+      - K8s
+      - Helm
+      - CI/CD
+      - CI/CD for models
+      - continuous integration
+      - continuous deployment
+      - model registry
+      - model deployment
+      - deploying models
+      - deployed models
+      - production deployment
+      - Terraform
+      - infrastructure as code
+      - GitHub Actions
+      - FastAPI
+      - REST API
+      - microservices
+  - cluster_id: monitoring
+    canonical_name: Monitoring
+    surface_forms:
+      - model monitoring
+      - drift detection
+      - data drift
+      - concept drift
+      - model drift
+      - production monitoring
+      - observability
+      - Prometheus
+      - Grafana
+      - Evidently
+      - Arize
+      - WhyLabs
+      - alerting
+  - cluster_id: feature_stores
+    canonical_name: Feature stores and data versioning
+    surface_forms:
+      - feature store
+      - feature stores
+      - Feast
+      - Tecton
+      - DVC
+      - data versioning
+      - feature engineering pipelines
