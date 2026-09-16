@@ -16,6 +16,7 @@ from fastapi.staticfiles import StaticFiles
 
 from atsc.config import get_settings
 from atsc.free.growth import GrowthLog
+from atsc.web.ratelimit import RateLimitMiddleware, SlidingWindowLimiter
 from atsc.web.report import router as report_router
 from atsc.web.routes import router
 
@@ -39,6 +40,14 @@ def create_app(*, warm: bool | None = None) -> FastAPI:
     app.state.growth = GrowthLog(
         Path(settings.growth_log_path) if settings.growth_log_path else None
     )
+    if settings.score_rate_limit > 0:
+        app.add_middleware(
+            RateLimitMiddleware,
+            limiter=SlidingWindowLimiter(
+                limit=settings.score_rate_limit, window_seconds=settings.score_rate_window_seconds
+            ),
+            client_ip_header=settings.client_ip_header,
+        )
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
     app.include_router(router)
     app.include_router(report_router)

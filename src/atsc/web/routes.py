@@ -90,6 +90,21 @@ def _form_context(
     }
 
 
+def too_many_requests(request: Request, *, retry_after: int) -> HTMLResponse:
+    """429 body for the rate limiter: the error fragment for htmx, the full page otherwise."""
+    minutes = max(1, round(retry_after / 60))
+    unit = "minute" if minutes == 1 else "minutes"
+    message = (
+        "Too many checks from this connection in a short time. "
+        f"Try again in about {minutes} {unit}."
+    )
+    ctx = {**_form_context(), "message": message}
+    name = "partials/error.html" if _is_htmx(request) else "index.html"
+    return templates.TemplateResponse(
+        request, name, ctx, status_code=429, headers={"Retry-After": str(retry_after)}
+    )
+
+
 @router.get("/", response_class=HTMLResponse)
 def home(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "index.html", _form_context())

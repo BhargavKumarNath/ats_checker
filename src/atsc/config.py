@@ -21,6 +21,12 @@ class Settings(BaseSettings):
     # Layer 1 web process.
     max_upload_bytes: int = 2_000_000  # resume files above this are refused with a 413
     warm_on_start: bool = True  # load the embedding model in the lifespan, not on first request
+    # Per-client sliding-window limit on POST /score (atsc.web.ratelimit). 0 disables it.
+    score_rate_limit: int = 30
+    score_rate_window_seconds: int = 600
+    # Header a trusted reverse proxy sets with the real client address ("Fly-Client-IP" on
+    # Fly). Empty = use the socket peer. Never set this when clients can reach the app directly.
+    client_ip_header: str = ""
 
     # Layer 2 persistence and delivery (build_plan.md §3: Postgres in production, SQLite locally).
     database_url: str = "sqlite:///./atsc.db"

@@ -11,6 +11,8 @@ primary_region = "iad"
   PORT = "8080"
   ATSC_TAXONOMY_DIR = "/app/taxonomy"
   ATSC_MODEL_CACHE_DIR = "/app/models"
+  # Fly's proxy sets the real client address here; the /score rate limiter keys on it.
+  ATSC_CLIENT_IP_HEADER = "Fly-Client-IP"
 
 [http_service]
   internal_port = 8080
