@@ -3,6 +3,8 @@ name = "atsc"
 version = "0.1.0"
 description = "ATS resume checker for ML/DS/AI roles: free deterministic scoring + paid RAG-grounded deep report."
 requires-python = ">=3.12,<3.13"
+license = "MIT"
+license-files = ["LICENSE"]
 dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.30",
