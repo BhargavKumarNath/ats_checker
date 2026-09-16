@@ -9,10 +9,10 @@ from __future__ import annotations
 
 import secrets
 import uuid
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Literal
 
-from sqlalchemy import DateTime, String, Text, create_engine, select
+from sqlalchemy import DateTime, String, Text, create_engine, delete, select
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
@@ -64,6 +64,10 @@ def make_engine(url: str) -> Engine:
 class JobStore:
     def __init__(self, engine: Engine) -> None:
         self._engine = engine
+
+    @property
+    def engine(self) -> Engine:
+        return self._engine
 
     def _session(self) -> Session:
         return Session(self._engine, expire_on_commit=False)
@@ -145,3 +149,19 @@ class JobStore:
                 job.error = error[:2000]
                 job.updated_at = _now()
                 s.commit()
+
+    def purge(self, statuses: tuple[str, ...], *, older_than: timedelta, now: datetime) -> int:
+        """Delete jobs in `statuses` not updated since `now - older_than`; returns the count.
+
+        Deletion is the retention policy: a finished job holds the buyer's resume text and the
+        generated report, and there is no reason to keep either once the link has gone stale.
+        Called from `atsc.deep.retention`, never from the web or worker processes.
+        """
+        cutoff = now - older_than
+        with self._engine.begin() as conn:
+            result = conn.execute(
+                delete(ReportJob)
+                .where(ReportJob.status.in_(statuses))
+                .where(ReportJob.updated_at < cutoff)
+            )
+            return int(result.rowcount)

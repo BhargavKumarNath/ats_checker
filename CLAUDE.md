@@ -40,6 +40,7 @@ uv run python -m atsc.deep.worker            # Layer 2 worker: the only process 
 uv run python scripts/deep_report_smoke.py   # one real paid report from the fixtures (spends tokens)
 uv run python scripts/bench/retrieval_bench.py   # Layer 2 retrieval eval by model and mode
 uv run python scripts/growth_report.py       # top unmatched terms when ATSC_GROWTH_LOG_PATH is set
+uv run python -m atsc.deep.retention --dry-run   # retention: delete old report_jobs (scheduled, not always-on)
 docker build -t atsc . && docker run --rm -p 8080:8080 atsc
 ```
 
