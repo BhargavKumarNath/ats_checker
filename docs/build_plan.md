@@ -115,6 +115,7 @@ Each phase ends with its own tests passing, a status note appended to §6, and a
 9. **Layer 2 generation.** Claude (configurable model) with structured output into `DeepReport`, grounding enforced by schema, readability flag via a deterministic readability metric, rewrite diff download.
 10. **Payments and delivery.** Stripe Checkout, webhook, job worker, report page, email link.
 11. **Deferred.** Multi-JD comparison; taxonomy growth loop from unmatched-term logs.
+12. **Public launch readiness.** README, license, in-process rate limit on `/score`, retention job for `report_jobs`. Closes the code-side items of the §7 checklist; deployment and secrets stay owner actions.
 
 ---
 
@@ -277,6 +278,20 @@ The single hybrid miss was a corpus gap (a Spark bullet that only said "PySpark"
 - The growth log is aggregate-only and opt-in so the footer's "nothing stored" stays true by default, and becomes "terms counted in aggregate" only when the owner turns it on.
 - Prose requirement sentences without a lead-in are not mined; they are rarely skill lists and would leak sentence fragments.
 
+### Phase 12 — Public launch readiness (complete, 2026-09-16)
+
+**Built:** `README.md` as the public front door: pitch, the two layers in plain terms with the component weights table, quickstart, status line (free layer standalone, paid layer awaits owner-side Stripe/Postgres/key/SMTP configuration), pointer to this file. Two screenshots in `docs/screenshots/` taken from the app running locally against the test fixtures (form at 1280 px; the score sheet for the clean resume × MLE JD pair, 79/100); no live URL is claimed. `LICENSE` (MIT) declared in `pyproject.toml`; htmx's BSD Zero Clause notice added next to the font licences. `atsc.web.ratelimit`: `SlidingWindowLimiter` (per key, at most N hits in any W seconds, idle keys pruned) and `RateLimitMiddleware`, pure ASGI, installed in `create_app` so the limit is visible in the import graph; limited to `POST /score`; a blocked request gets 429 with `Retry-After` and either the error fragment (htmx) or the full page. Settings `score_rate_limit` (30), `score_rate_window_seconds` (600), `client_ip_header` (empty; `fly.toml` sets `Fly-Client-IP`). `JobStore.purge` plus `atsc.deep.retention` (`python -m atsc.deep.retention`, `--dry-run`, `--finished-days`, `--abandoned-days`) and the `scripts/purge_jobs.py` wrapper; not imported by the web or worker processes. 15 tests, 205 total. Four scoped commits, one per task.
+
+**Decided (not in original docs):**
+- The limiter trusts no forwarding header unless the owner names one in `ATSC_CLIENT_IP_HEADER`. Without that, `X-Forwarded-For`-style headers are ignored, so a direct client cannot buy fresh buckets by inventing them. On Fly the proxy sets `Fly-Client-IP` and the config names it.
+- Limiter state is per process. One always-on web machine is the plan; with more machines the effective limit multiplies by their count, which is still bounded. A shared store would add a dependency to the free path for no present need.
+- Default budget 30 checks per 10 minutes per client: a person iterating on one resume does perhaps ten; a scraper does far more. `ATSC_SCORE_RATE_LIMIT=0` disables it (tests and local dev).
+- Retention deletes two classes, not one: finished (`done`/`failed`) jobs after 30 days, and `awaiting_payment` jobs after 7 days. An abandoned checkout still holds a resume, and a Stripe Checkout session expires within 24 hours, so an unpaid job a week old can never be paid. `queued`/`running` jobs are never touched.
+- The retention CLI is a module rather than only a script so the Fly scheduled machine can run it from the existing image, which does not copy `scripts/`.
+- MIT: nothing in `docs/` constrains licensing, and the bundled third-party assets (OFL fonts, 0BSD htmx) are compatible.
+
+**Left (owner actions, all configuration):** see §7. Nothing in this phase changed the cost boundary: `lint-imports` reports both contracts kept, `ANTHROPIC_API_KEY` remains unset, and no live model call has been made.
+
 ## 7. Launch checklist (owner actions)
 
 Everything below is configuration or a paid action; the code path for each is built and tested.
@@ -285,6 +300,6 @@ Everything below is configuration or a paid action; the code path for each is bu
 2. Fly: `fly launch` with `fly.toml`; set `ATSC_PUBLIC_BASE_URL`; attach Postgres and set `ATSC_DATABASE_URL`; set `ANTHROPIC_API_KEY` as a secret and confirm it is reachable only from the `worker` process group (the web group must not have it: cost-boundary guard 3).
 3. Email: set `ATSC_SMTP_*` and `ATSC_EMAIL_FROM`, or leave unset to log links during a soft launch.
 4. Run `scripts/deep_report_smoke.py` once with a key and read the output: prompt behaviour, effort level and cost per report are unvalidated until then.
-5. Add rate limiting on `POST /score` (Fly proxy or a small in-process limiter) before public traffic.
-6. Decide the retention period for `report_jobs` and add the delete job (suggest 30 days after completion).
+5. Rate limiting is built (Phase 12) and on by default. Confirm `ATSC_CLIENT_IP_HEADER=Fly-Client-IP` is set on Fly (it is in `fly.toml`) so buckets key on the real client, and adjust `ATSC_SCORE_RATE_LIMIT` / `ATSC_SCORE_RATE_WINDOW_SECONDS` if the defaults (30 per 10 minutes) prove wrong.
+6. Schedule the retention job (Phase 12): `fly machine run <image> --schedule daily "python -m atsc.deep.retention"` with `ATSC_DATABASE_URL` set, or an equivalent cron. Defaults delete finished jobs after 30 days and abandoned checkouts after 7; run with `--dry-run` first.
 7. Optional: set `ATSC_GROWTH_LOG_PATH` and review `scripts/growth_report.py` weekly to grow `taxonomy/`.
